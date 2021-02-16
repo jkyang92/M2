@@ -109,6 +109,7 @@ message("## Configure Macaulay2
      BUILD_TESTING     = ${BUILD_TESTING}
      BUILD_DOCS        = ${BUILD_DOCS}\n
      COVERAGE          = ${COVERAGE}
+     MEMDEBUG          = ${MEMDEBUG}
      PROFILING         = ${PROFILING}\n
      DEVELOPMENT       = ${DEVELOPMENT}
      EXPERIMENT        = ${EXPERIMENT}")
