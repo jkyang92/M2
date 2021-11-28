@@ -8,6 +8,8 @@
 #define TRUE 1
 #define FALSE 0
 
+FILE *alloc_log_file = NULL;
+
 static char errfmt[] = "%s:%d:%d: %s";
 static char errfmtnc[] = "%s:%d: %s";
 
@@ -64,6 +66,12 @@ void invalidNullPointer(const char *file, int line, int column) {
      if (column == -1) fatal(errfmtnc,file,line,msg);
      else fatal(errfmt,file,line,column,msg);
      }
+
+void log_frees(void* obj, void*) {
+  if(alloc_log_file){
+    fprintf(alloc_log_file,"F %p\n",obj);
+  }
+}
 
 /*
  Local Variables:

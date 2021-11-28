@@ -10,6 +10,12 @@
 
 #include "../system/supervisorinterface.h"
 
+FILE *alloc_log_file = NULL;
+
+void log_frees(void* obj, void*) {
+  fprintf(alloc_log_file,"F %p\n",obj);
+}
+
 extern void M2_stack_trace();
 
 void

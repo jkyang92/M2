@@ -15,7 +15,7 @@ bool arraychks = TRUE;
 bool casechks = TRUE;
 bool compilerThreadLocal = FALSE;
 bool pthreadThreadLocal = TRUE;
-
+bool memlog = FALSE;
 
 static char Copyright[] = "Copyright 1993, 2010, by Daniel R. Grayson";
 static char Version[]   = "Safe C - version 2.0";
@@ -183,6 +183,7 @@ static void usage() {
   printf("    -yydebug      debug the parser\n");
   printf("    -debug        set debugging mode on, write symbol table, list of types, and list of strings to foo.sym\n");
   printf("    -Ixxx         append xxx to the path used for finding *.sig files, initially \".\"\n");
+  printf("    -memlog       add code to log allocations\n");
 }
 
 int main(int argc, char **argv){
@@ -251,6 +252,10 @@ int main(int argc, char **argv){
 	  if (EQUAL == strcmp(argv[i],"-v")) {
 	       puts(Version);
      	       puts(Copyright);
+	       continue;
+	       }
+	  if (EQUAL == strcmp(argv[i],"-memlog")) {
+               memlog = TRUE;
 	       continue;
 	       }
      	  if ('-' == argv[i][0] && 'I' == argv[i][1]) {

@@ -3,7 +3,7 @@
 ## for translating .d and .dd files to .c and .cc files, respectively.
 
 # Tip: -noline remove the line macros to make reading the output easier
-set(SCCFLAGS "-O" CACHE STRING "Flags for the Safe C Compiler")
+set(SCCFLAGS "-O" "-memlog")
 
 # Generate a C or C++ source (.c or .cc) from the D source (.d or .dd, resp.)
 #  _source:  D source filename; e.g. interp.dd

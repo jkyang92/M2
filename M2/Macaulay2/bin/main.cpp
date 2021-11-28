@@ -61,6 +61,13 @@ int main(/* const */ int argc, /* const */ char *argv[], /* const */ char *env[]
   /* find the number of environment variables defined */
   int envc = -1;
   while (env[++envc] != NULL) { /* iterate over environ until you hit NULL */ }
+  char *memlog_filename;
+  if(memlog_filename = getenv("M2_MEMLOG_FILE")){
+    alloc_log_file = fopen(memlog_filename,"w");
+  }
+  else if(getenv("M2_ENABLE_MEMLOG")){
+    alloc_log_file = stderr;
+  }
 
   GC_INIT();
   IM2_initialize();

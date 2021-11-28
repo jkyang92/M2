@@ -404,6 +404,19 @@ static void cprintgetmem(node g){
   put(") outofmem2((size_t)");
   cprintsomesizeof(t, length(g)==2 ? CADR(g) : NULL);
   put(")");
+  if(memlog){
+    put(";");
+    put("log_alloc(");
+    cprint(s);
+    put(",\"");
+    if(t->body.type.name != NULL){
+        cprint(t->body.type.name);
+    }
+    else{
+        put("<unknown_type>");
+    }
+    put("\")");
+  }
 }
 
 static void cprinttypedef(node t) {
