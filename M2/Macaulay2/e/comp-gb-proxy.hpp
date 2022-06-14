@@ -106,7 +106,7 @@ class GBProxy : public GBComputation
 
   virtual void text_out(buffer &o) const { G->text_out(o); }
   // This displays statistical information, and depends on the
-  // M2_gbTrace value.
+  // gbTrace value.
 
   virtual void show() const { G->show(); }
 };

@@ -209,7 +209,7 @@ bool ReducedGB_Field_Local::find_good_divisor(
       div_info[next++] = gb_elems[id];
     }
 
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << "\nfind good divisor:";
@@ -281,7 +281,7 @@ bool ReducedGB_Field_Local::find_good_divisor(
         }
     }
 
-  if (nmatches > 1 && M2_gbTrace == 3)
+  if (nmatches > 1 && gbTrace == 3)
     {
       buffer o;
       o << nmatches;
@@ -292,7 +292,7 @@ bool ReducedGB_Field_Local::find_good_divisor(
   assert(result_i >= 0);
   result_g = div_info[result_i].g;
 
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       if (nmatches > 1) o << "\n  nmatches " << n;
@@ -341,7 +341,7 @@ bool ReducedGB_Field_Local::find_good_divisor(
     }
   divisors.clear();
 
-  if (M2_gbTrace>=4)
+  if (gbTrace>=4)
     {
       buffer o;
       o << "\nfind good divisor:";
@@ -353,7 +353,7 @@ bool ReducedGB_Field_Local::find_good_divisor(
   if (n > 0)
     {
       POLY p;
-      if (M2_gbTrace>=4)
+      if (gbTrace>=4)
         {
           buffer o;
           o << "\n  ndivisors from appended elements " << n;
@@ -398,7 +398,7 @@ bool ReducedGB_Field_Local::find_good_divisor(
   if (n > 0)
     {
       POLY p;
-      if (M2_gbTrace>=4)
+      if (gbTrace>=4)
         {
           buffer o;
           o << "\n  ndivisors from GB " << n;
@@ -441,7 +441,7 @@ bool ReducedGB_Field_Local::find_good_divisor(
   divisors.clear();
 
 
-  if (M2_gbTrace>=4)
+  if (gbTrace>=4)
     {
       buffer o;
       o << "\n  chosen value: ";
@@ -480,7 +480,7 @@ void ReducedGB_Field_Local::store_in_table(const POLY &h,
 
 void ReducedGB_Field_Local::remainder(POLY &f, bool use_denom, ring_elem &denom)
 {
-  if (M2_gbTrace >= 4) {
+  if (gbTrace >= 4) {
       buffer o;
       text_out(o);
       emit(o.str());
@@ -496,12 +496,12 @@ void ReducedGB_Field_Local::remainder(POLY &f, bool use_denom, ring_elem &denom)
   int h_deg = wt->gbvector_weight(f.f);
   while (!R->gbvector_is_zero(h.f))
     {
-      if (M2_gbTrace == 3) emit_wrapped(".");
+      if (gbTrace == 3) emit_wrapped(".");
       POLY g;
       R->gbvector_get_lead_exponents(F, h.f, h_exp);
       int h_comp = h.f->comp;
 
-      if (M2_gbTrace >= 4)
+      if (gbTrace >= 4)
         {
           buffer o;
           o << "\nreducing ";
@@ -516,7 +516,7 @@ void ReducedGB_Field_Local::remainder(POLY &f, bool use_denom, ring_elem &denom)
                             g,
                             g_alpha))  // sets these three values
         {
-          if (M2_gbTrace >= 4)
+          if (gbTrace >= 4)
             {
               buffer o;
               o << "  h_alpha " << h_alpha << " g_alpha "
@@ -538,8 +538,8 @@ void ReducedGB_Field_Local::remainder(POLY &f, bool use_denom, ring_elem &denom)
               // place h into T1, and store its (value,deg,alpha) values.
               // store_in_table copies h
               store_in_table(h, h_exp, h_comp, h_alpha);
-              if (M2_gbTrace == 3) emit_wrapped("x");
-              if (M2_gbTrace == 4) emit("\nstored result\n");
+              if (gbTrace == 3) emit_wrapped("x");
+              if (gbTrace == 4) emit("\nstored result\n");
               h_deg += g_alpha - h_alpha;
               h_exp = R->exponents_make();
             }
@@ -580,12 +580,12 @@ void ReducedGB_Field_Local::remainder(gbvector *&f,
   int h_deg = wt->gbvector_weight(f);
   while (!R->gbvector_is_zero(h.f))
     {
-      if (M2_gbTrace == 3) emit_wrapped(".");
+      if (gbTrace == 3) emit_wrapped(".");
       POLY g;
       R->gbvector_get_lead_exponents(F, h.f, h_exp);
       int h_comp = h.f->comp;
 
-      if (M2_gbTrace >= 4)
+      if (gbTrace >= 4)
         {
           buffer o;
           o << "\nreducing ";
@@ -600,7 +600,7 @@ void ReducedGB_Field_Local::remainder(gbvector *&f,
                             g,
                             g_alpha))  // sets these three values
         {
-          if (M2_gbTrace >= 4)
+          if (gbTrace >= 4)
             {
               buffer o;
               o << "  h_alpha " << h_alpha << " g_alpha "
@@ -621,8 +621,8 @@ void ReducedGB_Field_Local::remainder(gbvector *&f,
                 }
               // place h into T1, and store its (value,deg,alpha) values.
               store_in_table(h, h_exp, h_comp, h_alpha);
-              if (M2_gbTrace == 3) emit_wrapped("x");
-              if (M2_gbTrace == 4) emit("\nstored result\n");
+              if (gbTrace == 3) emit_wrapped("x");
+              if (gbTrace == 4) emit("\nstored result\n");
               h_deg += g_alpha - h_alpha;
               h_exp = R->exponents_make();
             }

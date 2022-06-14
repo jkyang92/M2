@@ -33,6 +33,9 @@ struct MutableMatrix;
 struct RingMap;
 
 bool warning_given_for_gb_or_res_over_RR_or_CC = false;
+int gbTrace = 0;
+//0 means use the maximum
+int numTBBThreads = 0;
 
 void test_over_RR_or_CC(const Ring *R)
 {
@@ -244,7 +247,7 @@ Computation /* or null */ *rawStartComputation(Computation *C)
       clear_emit_size();
       C->start_computation();
 
-      if (M2_gbTrace == 15)
+      if (gbTrace == 15)
         {
           ComputationStatusCode ret = C->status();
           switch (ret)
@@ -905,7 +908,7 @@ const Matrix* rawNCGroebnerBasisTwoSided(const Matrix* input, int maxdeg, int st
       bool isParallel = strategy & 32;
       if (isF4)
         {
-          int numthreads = M2_numTBBThreads; // settable from front end.
+          int numthreads = numTBBThreads; // settable from front end.
           std::cout << "Using numthreads = " << numthreads << std::endl;
           NCF4 G(A->freeAlgebra(), elems, maxdeg, strategy, (isParallel ? numthreads : 1));
           G.compute(maxdeg); // this argument is actually the soft degree limit

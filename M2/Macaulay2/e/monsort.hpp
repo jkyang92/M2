@@ -7,9 +7,7 @@
 #include <cstdlib>
 #include "newdelete.hpp"
 
-#if !defined(SAFEC_EXPORTS)
-#include <engine-exports.h>
-#endif
+#include "engine-includes.hpp"
 
 template <typename Sorter>
 // Sorter S, needs to define:
@@ -375,7 +373,7 @@ void QuickSorter<Sorter>::sort(Sorter *M0, value *elems0, long len0)
   long double nsecs = end_time - begin_time;
   nsecs /= CLOCKS_PER_SEC;
 
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     fprintf(
         stderr, "sort: len %ld depth %ld time %Lf\n", len0, S.maxdepth, nsecs);
 }

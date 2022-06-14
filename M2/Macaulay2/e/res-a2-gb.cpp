@@ -287,7 +287,7 @@ void gb2_comp::find_pairs(gb_elem *p)
           if (M->is_one(find_pairs_m))
             {
               n_pairs_gcd++;
-              if (M2_gbTrace >= 8)
+              if (gbTrace >= 8)
                 {
                   buffer o;
                   o << "removed pair[" << q->first->me << " " << q->second->me
@@ -340,7 +340,7 @@ void gb2_comp::gb_reduce(gbvector *&f, gbvector *&fsyz)
 
   int *div_totalexp = newarray_atomic(int, M->n_vars());
   int count = 0;
-  if (M2_gbTrace == 10)
+  if (gbTrace == 10)
     {
       buffer o;
       o << "reducing ";
@@ -365,7 +365,7 @@ void gb2_comp::gb_reduce(gbvector *&f, gbvector *&fsyz)
           GR->gbvector_reduce_lead_term(
               F, Fsyz, head.next, f, fsyz, q->f, q->fsyz);
           count++;
-          if (M2_gbTrace == 10)
+          if (gbTrace == 10)
             {
               buffer o;
               o << "  reduced by ";
@@ -386,7 +386,7 @@ void gb2_comp::gb_reduce(gbvector *&f, gbvector *&fsyz)
         }
     }
 
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << "." << count;
@@ -446,7 +446,7 @@ void gb2_comp::gb_geo_reduce(gbvector *&f, gbvector *&fsyz)
         }
     }
 
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << "." << count;
@@ -495,7 +495,7 @@ void gb2_comp::gb_insert(gbvector *f, gbvector *fsyz, int ismin)
   else
     GR->gbvector_remove_content(p->f, p->fsyz);
 
-  if (M2_gbTrace >= 10)
+  if (gbTrace >= 10)
     {
       buffer o;
       o << "inserting level " << level << " ";
@@ -582,7 +582,7 @@ bool gb2_comp::s_pair_step()
       gb_insert(f, fsyz, 0);
       n_gb_syz--;
       n_pairs_gb++;
-      if (M2_gbTrace >= 3) emit_wrapped("m");
+      if (gbTrace >= 3) emit_wrapped("m");
     }
   else if (fsyz != NULL && syz != NULL)
     {
@@ -590,19 +590,19 @@ bool gb2_comp::s_pair_step()
         {
           n_gb_syz--;
           n_pairs_syz++;
-          if (M2_gbTrace >= 3) emit_wrapped("z");
+          if (gbTrace >= 3) emit_wrapped("z");
         }
       else
         {
           n_pairs_usyz++;
-          if (M2_gbTrace >= 3) emit_wrapped("u");
+          if (gbTrace >= 3) emit_wrapped("u");
         }
     }
   else
     {
       if (fsyz != NULL) GR->gbvector_remove(fsyz);
       n_pairs_zero++;
-      if (M2_gbTrace >= 3) emit_wrapped("o");
+      if (gbTrace >= 3) emit_wrapped("o");
     }
   return true;
 }
@@ -731,7 +731,7 @@ enum ComputationStatusCode gb2_comp::calc_gb(int deg)
 //        emit(o1.str());
 //        o1.reset();
 #endif
-          if (M2_gbTrace >= 1 && n_gb_syz != 0)
+          if (gbTrace >= 1 && n_gb_syz != 0)
             {
               buffer o;
               o << "<WARNING: remaining nsyz+ngb = " << n_gb_syz << ">";
@@ -748,7 +748,7 @@ enum ComputationStatusCode gb2_comp::calc_gb(int deg)
       state = STATE_GB;
       n_gb_first = n_gb;
       int npairs = get_pairs();
-      if (M2_gbTrace >= 1 && npairs > 0)
+      if (gbTrace >= 1 && npairs > 0)
         {
           buffer o;
           // Should only display this if there are some pairs.
@@ -791,7 +791,7 @@ enum ComputationStatusCode gb2_comp::calc_gb(int deg)
           end_degree();
         }
     }
-  // MES: put out an endl if M2_gbTrace >= 1?
+  // MES: put out an endl if gbTrace >= 1?
 
   // Is this where we should compute the HF again: for use by the
   // previous node... Do we really have to compute it twice per degree/level
@@ -938,7 +938,7 @@ void gb2_comp::debug_out(buffer &o, s_pair *q) const
 // a string, essentially, and stats displays its result directly.
 void gb2_comp::text_out(buffer &o) const
 {
-  if (M2_gbTrace >= 4 && n_gb > 0)
+  if (gbTrace >= 4 && n_gb > 0)
     {
       int nmonoms = 0;
       int nchange = 0;
@@ -972,7 +972,7 @@ void gb2_comp::text_out(buffer &o) const
     }
 
   spairs->text_out(o);
-  if (M2_gbTrace >= 5 && M2_gbTrace % 2 == 1)
+  if (gbTrace >= 5 && gbTrace % 2 == 1)
     for (int i = 0; i < gb.size(); i++)
       {
         o << i << '\t';
@@ -984,7 +984,7 @@ void gb2_comp::text_out(buffer &o) const
 void gb2_comp::stats() const
 {
   buffer o;
-  if (M2_gbTrace >= 4 && n_gb > 0)
+  if (gbTrace >= 4 && n_gb > 0)
     {
       int nmonoms = 0;
       int nchange = 0;
@@ -1020,7 +1020,7 @@ void gb2_comp::stats() const
     }
 
   spairs->stats();
-  if (M2_gbTrace >= 5 && M2_gbTrace % 2 == 1)
+  if (gbTrace >= 5 && gbTrace % 2 == 1)
     {
       o << "free module is ";
       F->text_out(o);

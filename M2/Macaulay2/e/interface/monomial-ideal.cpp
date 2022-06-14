@@ -148,7 +148,7 @@ const MonomialIdeal /* or null */ *rawColonMonomialIdeal2(
         }
       MonomialIdeal *result = I->quotient(*J);
       intern_monideal(result);
-      if (M2_gbTrace >= 1) dstash();
+      if (gbTrace >= 1) dstash();
       return result;
 
   } catch (const exc::engine_error& e)
@@ -307,7 +307,7 @@ class MyIdealConsumer : public Frobby::IdealConsumer, our_new_delete
       exp[i] = static_cast<int>(mpz_get_si(
           exponentVector[i]));  // overflow should not occur, as input fit
 
-    if (M2_gbTrace >= 5)
+    if (gbTrace >= 5)
       {
         fprintf(stderr, "got ");
         for (int j = 0; j < nv; j++) fprintf(stderr, "%d ", exp[j]);
@@ -332,13 +332,13 @@ static MonomialIdeal *FrobbyAlexanderDual(const MonomialIdeal *I,
       Bag *b = I->operator[](i);
       varpower::to_ntuple(nv, b->monom().raw(), exp);
 
-      if (M2_gbTrace >= 4) fprintf(stderr, "adding ");
+      if (gbTrace >= 4) fprintf(stderr, "adding ");
       for (int j = 0; j < nv; j++)
         {
-          if (M2_gbTrace >= 4) fprintf(stderr, "%d ", exp[j]);
+          if (gbTrace >= 4) fprintf(stderr, "%d ", exp[j]);
           F.addExponent(exp[j]);
         }
-      if (M2_gbTrace >= 4) fprintf(stderr, "\n");
+      if (gbTrace >= 4) fprintf(stderr, "\n");
     }
 
   // Now create the consumer object, and call Frobby
@@ -392,10 +392,10 @@ static MonomialIdeal /* or null */ *alexDual(const MonomialIdeal *I,
   switch (strategy)
     {
       case 0:
-        if (M2_gbTrace >= 1) emit_line(" -- [Alexander dual: frobby]");
+        if (gbTrace >= 1) emit_line(" -- [Alexander dual: frobby]");
         return wrapperFrobbyAlexanderDual(I, top);
       default:
-        if (M2_gbTrace >= 1) emit_line(" -- [Alexander dual: M2 monideal]");
+        if (gbTrace >= 1) emit_line(" -- [Alexander dual: M2 monideal]");
         return I->alexander_dual(top);
     }
 }

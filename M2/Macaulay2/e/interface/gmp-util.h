@@ -3,6 +3,11 @@
 
 #  include "../d/M2mem.h"
 
+#if !defined(SAFEC_EXPORTS)
+#include <engine-exports.h>
+#endif
+
+
 /**
    Multiprecision arithmetic allocation utility routines
  */

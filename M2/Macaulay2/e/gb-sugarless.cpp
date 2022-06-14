@@ -240,7 +240,7 @@ int GBinhom_comp::mark_pair(gb_elem *p, gb_elem *q) const
         if (r->compare_num >= 0)
           {
             r->compare_num = -1;
-            if (M2_gbTrace >= 8)
+            if (gbTrace >= 8)
               {
                 buffer o;
                 o << "---- removed pair ";
@@ -258,7 +258,7 @@ int GBinhom_comp::mark_pair(gb_elem *p, gb_elem *q) const
         if (r->compare_num >= 0)
           {
             r->compare_num = -1;
-            if (M2_gbTrace >= 8)
+            if (gbTrace >= 8)
               {
                 buffer o;
                 o << "---- removed pair ";
@@ -373,7 +373,7 @@ void GBinhom_comp::find_pairs(gb_elem *p)
               n_saved_gcd++;
               q->compare_num = -1;  // MES: change name of field!!
                                     // This means: don't compute spair.
-              if (M2_gbTrace >= 8)
+              if (gbTrace >= 8)
                 {
                   buffer o;
                   o << "removed pair[" << q->first->me << " " << q->second->me
@@ -387,7 +387,7 @@ void GBinhom_comp::find_pairs(gb_elem *p)
   nextsame->next = NULL;
   p->pair_list = head.next;
   spairs->sort_list(p->pair_list);
-  if (M2_gbTrace >= 8)
+  if (gbTrace >= 8)
     {
       buffer o;
       for (q = p->pair_list; q != NULL; q = q->next)
@@ -467,7 +467,7 @@ int GBinhom_comp::gb_reduce(gbvector *&f, gbvector *&fsyz)
 
   int *div_totalexp = newarray_atomic(int, M->n_vars());
   int count = 0;
-  if (M2_gbTrace == 10)
+  if (gbTrace == 10)
     {
       buffer o;
       o << "reducing ";
@@ -503,7 +503,7 @@ int GBinhom_comp::gb_reduce(gbvector *&f, gbvector *&fsyz)
           result->next = 0;
         }
     }
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << "." << count;
@@ -568,7 +568,7 @@ int GBinhom_comp::gb_geo_reduce(gbvector *&f, gbvector *&fsyz)
         }
     }
 
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << "." << count;
@@ -680,7 +680,7 @@ int GBinhom_comp::s_pair_step(s_pair *p)
 // values.
 {
   n_computed++;
-  if (M2_gbTrace >= 8)
+  if (gbTrace >= 8)
     {
       buffer o;
       o << "--- computing pair ";
@@ -713,7 +713,7 @@ int GBinhom_comp::s_pair_step(s_pair *p)
   if (!GR->gbvector_is_zero(f))
     {
       gb_insert(f, fsyz, minlevel);
-      if (M2_gbTrace >= 8)
+      if (gbTrace >= 8)
         {
           buffer o;
           o << "  gb " << last_gb_num - 1 << " = ";
@@ -724,7 +724,7 @@ int GBinhom_comp::s_pair_step(s_pair *p)
     }
   if (!GR->gbvector_is_zero(fsyz))
     {
-      if (M2_gbTrace >= 8)
+      if (gbTrace >= 8)
         {
           buffer o;
           o << "  syz = ";
@@ -795,7 +795,7 @@ void GBinhom_comp::start_computation()
           break;
         }
       int stype = s_pair_step(p);
-      if (M2_gbTrace >= 3 && M2_gbTrace <= 7) switch (stype)
+      if (gbTrace >= 3 && gbTrace <= 7) switch (stype)
           {
             case SPAIR_GB:
               emit_wrapped("m");
@@ -816,8 +816,8 @@ void GBinhom_comp::start_computation()
     }
 
   // MES: complete the reduction of the GB here
-  if (M2_gbTrace >= 1) emit_line("");
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 1) emit_line("");
+  if (gbTrace >= 4)
     {
       buffer o;
       o << "Number of pairs             = " << n_pairs << newline;
@@ -888,7 +888,7 @@ int GBinhom_comp::complete_thru_degree() const
 
 void GBinhom_comp::text_out(buffer &o) const
 /* This displays statistical information, and depends on the
-   M2_gbTrace value */
+   gbTrace value */
 {
   stats();
 }
@@ -1025,7 +1025,7 @@ void GBinhom_comp::stats() const
 {
   spairs->stats();
   buffer o;
-  if (M2_gbTrace >= 5 && M2_gbTrace % 2 == 1)
+  if (gbTrace >= 5 && gbTrace % 2 == 1)
     {
       int i = 0;
       for (gb_elem *q = gb->next_min; q != NULL; q = q->next_min)

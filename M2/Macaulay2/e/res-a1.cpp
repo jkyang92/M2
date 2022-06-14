@@ -617,7 +617,7 @@ void res_comp::new_pairs(res_pair *p)
 
   monomial PAIRS_mon = ALLOCATE_MONOMIAL(monom_size);
 
-  if (M2_gbTrace >= 10)
+  if (gbTrace >= 10)
     {
       buffer o;
       o << "Computing pairs with first = " << p->me << newline;
@@ -689,7 +689,7 @@ void res_comp::new_pairs(res_pair *p)
   MonomialIdeal *mi = new MonomialIdeal(P, elems, rejects, mi_stash);
   while (rejects.remove(b)) delete b;
 
-  if (M2_gbTrace >= 11) mi->debug_out(1);
+  if (gbTrace >= 11) mi->debug_out(1);
 
   for (j = mi->first(); j.valid(); j++)
     {
@@ -928,7 +928,7 @@ void res_comp::start_computation()
           set_status(COMP_DONE_DEGREE_LIMIT);
           return;
         }
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         {
           buffer o;
           o << '{' << n_degree << '}';
@@ -945,14 +945,14 @@ void res_comp::start_computation()
 
       for (; n_level <= length_limit + 1; n_level++)
         {
-          if (M2_gbTrace >= 1) emit_wrapped(".");
+          if (gbTrace >= 1) emit_wrapped(".");
 
           DO(pairs(n_level - 1, n_degree));
           DO(pairs(n_level - 1, n_degree + 1));
           DO(reductions(n_level, n_degree));
         }
     }
-  if (M2_gbTrace >= 6)
+  if (gbTrace >= 6)
     {
       buffer o;
       text_out(o);
@@ -963,7 +963,7 @@ void res_comp::start_computation()
 
 enum ComputationStatusCode res_comp::gens(int deg)
 {
-  if (M2_gbTrace >= 5)
+  if (gbTrace >= 5)
     {
       buffer o;
       o << "gens(" << deg << ")" << newline;
@@ -1000,7 +1000,7 @@ enum ComputationStatusCode res_comp::pairs(int level, int deg)
   // Cases: level=1: gens(deg), pairs(1,deg-1)
   //        level=2: pairs(1,deg)
   //        level>2: pairs(level-1,deg), pairs(level-2,deg+1)
-  if (M2_gbTrace >= 5)
+  if (gbTrace >= 5)
     {
       buffer o;
       o << "pairs(" << level << ", " << deg << ")" << newline;
@@ -1024,7 +1024,7 @@ enum ComputationStatusCode res_comp::pairs(int level, int deg)
 enum ComputationStatusCode res_comp::reductions(int level, int deg)
 {
   res_pair *p;
-  if (M2_gbTrace >= 5)
+  if (gbTrace >= 5)
     {
       buffer o;
       o << "reductions(" << level << ", " << deg << ")" << newline;
@@ -1064,12 +1064,12 @@ void res_comp::handle_gen(res_pair *p)
       insert_res_pair(1, p);
       p->minimal_me = resn[1]->nminimal++;
       nminimal++;
-      if (M2_gbTrace >= 2) emit_wrapped("z");
+      if (gbTrace >= 2) emit_wrapped("z");
     }
   else
     {
       remove_res_pair(p);
-      if (M2_gbTrace >= 2) emit_wrapped("o");
+      if (gbTrace >= 2) emit_wrapped("o");
     }
 }
 void res_comp::handle_pair(res_pair *p)
@@ -1089,7 +1089,7 @@ void res_comp::handle_pair(res_pair *p)
       p->syz_type = SYZ_MINIMAL;
       p->minimal_me = resn[n_level]->nminimal++;
       nminimal++;
-      if (M2_gbTrace >= 2) emit_wrapped("z");
+      if (gbTrace >= 2) emit_wrapped("z");
     }
   else
     {
@@ -1099,7 +1099,7 @@ void res_comp::handle_pair(res_pair *p)
       // non-minimal syzygy
       q->syz = f;
       q->syz_type = SYZ_NOT_NEEDED;
-      if (M2_gbTrace >= 2) emit_wrapped("m");
+      if (gbTrace >= 2) emit_wrapped("m");
       // MES: need to decrement nleft for 'q'.
     }
 }
@@ -1275,7 +1275,7 @@ void res_comp::text_out(buffer &o, const res_pair *p) const
 //     }
 #endif
   M->elem_text_out(o, p->base_monom);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     {
       // Display the vector
       o << " syz: ";
@@ -1311,7 +1311,7 @@ void res_comp::text_out(buffer &o) const
   o << "--- (Lower bounds of) the minimal betti numbers ----------" << newline;
   a = betti_minimal();
   betti_display(o, a);
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       o << "--- Number of monomials  ---------------------------------"
         << newline;
@@ -1320,7 +1320,7 @@ void res_comp::text_out(buffer &o) const
     }
 
   // If the printlevel is high enough, display each element
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     for (int lev = 0; lev < resn.size(); lev++)
       {
         o << "---- level " << lev << " ----" << newline;
@@ -1504,7 +1504,7 @@ void res_comp::skeleton_pairs(res_pair *&result, res_pair *p)
 
   monomial PAIRS_mon = ALLOCATE_MONOMIAL(monom_size);
 
-  if (M2_gbTrace >= 10)
+  if (gbTrace >= 10)
     {
       buffer o;
       o << "Computing pairs with first = " << p->me << newline;
@@ -1577,7 +1577,7 @@ void res_comp::skeleton_pairs(res_pair *&result, res_pair *p)
   MonomialIdeal *mi = new MonomialIdeal(P, elems, rejects);
   while (rejects.remove(b)) delete b;
 
-  if (M2_gbTrace >= 11) mi->debug_out(1);
+  if (gbTrace >= 11) mi->debug_out(1);
 
   for (j = mi->first(); j.valid(); j++)
     {

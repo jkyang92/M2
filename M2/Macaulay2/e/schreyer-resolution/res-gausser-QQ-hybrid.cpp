@@ -5,7 +5,7 @@
 #include <iostream>          // for operator<<, basic_ostream, endl, cout
 #include <type_traits>       // for move
 #include "buffer.hpp"        // for buffer
-#include "engine-exports.h"  // for M2_gbTrace
+#include "engine-includes.hpp"  // for gbTrace
 
 long ResGausser::numAdditions = 0;
 
@@ -296,7 +296,7 @@ void ResGausserQQHybrid::sparseCancel(CoefficientVector r,
   if (a.mDenominatorSize > mMaxDenominatorSize)
     {
       mMaxDenominatorSize = a.mDenominatorSize;
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         {
           std::cout << "coeff with den = " << a.mDenominatorSize << ": ";
           out(std::cout, a);

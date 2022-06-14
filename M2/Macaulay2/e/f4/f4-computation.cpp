@@ -158,7 +158,7 @@ int F4Computation::complete_thru_degree() const
 
 void F4Computation::text_out(buffer &o) const
 /* This displays statistical information, and depends on the
-   M2_gbTrace value */
+   gbTrace value */
 {
   // TODO: what to display?
 }

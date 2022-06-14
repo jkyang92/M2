@@ -37,7 +37,7 @@ ResolutionComputation *ResolutionComputation::choose_res(
   const M2FreeAlgebraOrQuotient *NCP = R->cast_to_M2FreeAlgebraOrQuotient();
   if (NCP != nullptr)
     {
-      if (M2_gbTrace > 0) emit_line("NC resolution");
+      if (gbTrace > 0) emit_line("NC resolution");
       C = createNCRes(m, max_level, strategy);
       return C;
     }
@@ -83,7 +83,7 @@ ResolutionComputation *ResolutionComputation::choose_res(
                 "polynomial rings");
             return nullptr;
           }
-        if (M2_gbTrace > 0) emit_line("resolution Strategy=>1");
+        if (gbTrace > 0) emit_line("resolution Strategy=>1");
         C = new res_comp(m, max_level, strategy);
         break;
       case 0:
@@ -101,18 +101,18 @@ ResolutionComputation *ResolutionComputation::choose_res(
                 "polynomial rings");
             return nullptr;
           }
-        if (M2_gbTrace > 0) emit_line("resolution Strategy=>0");
+        if (gbTrace > 0) emit_line("resolution Strategy=>0");
         C = new res2_comp(
             m, max_level, use_max_slanted_degree, max_slanted_degree, strategy);
         break;
       case 2:
         origsyz = m->n_cols();
-        if (M2_gbTrace > 0) emit_line("resolution Strategy=>2");
+        if (gbTrace > 0) emit_line("resolution Strategy=>2");
         C = new gbres_comp(m, max_level + 1, origsyz, strategy);
         break;
       case 3:
         origsyz = m->n_cols();
-        if (M2_gbTrace > 0) emit_line("resolution Strategy=>3");
+        if (gbTrace > 0) emit_line("resolution Strategy=>3");
         C = new gbres_comp(
             m, max_level + 1, origsyz, strategy | STRATEGY_USE_HILB);
         break;
@@ -132,7 +132,7 @@ ResolutionComputation *ResolutionComputation::choose_res(
                 "polynomial rings");
             return nullptr;
           }
-        if (M2_gbTrace > 0) emit_line("resolution Strategy=>4 (res-f4)");
+        if (gbTrace > 0) emit_line("resolution Strategy=>4 (res-f4)");
         C = createF4Res(m, max_level, strategy);
         if (C == nullptr) return nullptr;
         break;

@@ -192,7 +192,7 @@ void gbres_comp::start_computation()
 {
   //  int old_compare_type = compare_type;
   //  compare_type = (strategy_flags >> 10);
-  //  if (M2_gbTrace >= 4)
+  //  if (gbTrace >= 4)
   //    {
   //      buffer o;
   //      o << "compare=" << compare_type << newline;
@@ -206,7 +206,7 @@ void gbres_comp::start_computation()
           //      compare_type = old_compare_type;
           return;
         }
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         {
           buffer o;
           o << "{" << i << "}";

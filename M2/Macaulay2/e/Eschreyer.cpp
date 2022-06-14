@@ -78,7 +78,7 @@ int GBKernelComputation::calc()
     mm->append(GR->gbvector_copy(syzygies[p]));
   buffer o;
   Matrix *m = mm->to_matrix();
-  if (M2_gbTrace >= 5)
+  if (gbTrace >= 5)
     {
       o << "skeleton = " << newline;
       m->text_out(o);
@@ -271,7 +271,7 @@ int GBKernelComputation::find_divisor(const MonomialIdeal *this_mi,
   if (ndivisors == 0) return 0;
   result = bb[0]->basis_elem();
   // Now search through, and find the best one.  If only one, just return it.
-  if (M2_gbTrace >= 5)
+  if (gbTrace >= 5)
     if (this_mi->length() > 1)
       {
         buffer o;
@@ -343,7 +343,7 @@ void GBKernelComputation::wipe_unneeded_terms(gbvector *&f)
         }
     }
 #if 0
-//   if (M2_gbTrace >= 5)
+//   if (gbTrace >= 5)
 //     {
 //       buffer o;
 //       o << "[" << nterms << ",s" << nsaved << "]";
@@ -368,7 +368,7 @@ void GBKernelComputation::reduce(gbvector *&f, gbvector *&fsyz)
   int max_len = GR->gbvector_n_terms(f);
 
   int count = 0;
-  if (M2_gbTrace >= 4) emit_wrapped(",");
+  if (gbTrace >= 4) emit_wrapped(",");
 
   while (f != NULL)
     {
@@ -435,7 +435,7 @@ void GBKernelComputation::reduce(gbvector *&f, gbvector *&fsyz)
         }
     }
 
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << count;
@@ -460,7 +460,7 @@ void GBKernelComputation::geo_reduce(gbvector *&f, gbvector *&fsyz)
   int q;
 
   int count = 0;
-  if (M2_gbTrace >= 4) emit_wrapped(",");
+  if (gbTrace >= 4) emit_wrapped(",");
 
   while ((lead = fb.get_lead_term()) != NULL)
     {
@@ -519,7 +519,7 @@ void GBKernelComputation::geo_reduce(gbvector *&f, gbvector *&fsyz)
         }
     }
 
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << count;

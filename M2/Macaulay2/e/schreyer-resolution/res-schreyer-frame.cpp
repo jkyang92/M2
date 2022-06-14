@@ -100,7 +100,7 @@ bool SchreyerFrame::computeFrame()
   // Uses mCurrentLevel
   while (mCurrentLevel < mFrame.mLevels.size())
     {
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         std::cout << "maxsize = " << mFrame.mLevels.size()
                   << " and mCurrentLevel = " << mCurrentLevel << std::endl;
       if (computeNextLevel() == 0) break;  // increments mCurrentLevel
@@ -114,7 +114,7 @@ bool SchreyerFrame::computeFrame()
   getBounds(mLoSlantedDegree, mHiSlantedDegree, mMaxLength);
   mSlantedDegree = mLoSlantedDegree;
   setBettiDisplays();  // Also sets mMinimalizeTODO
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       std::cout << "non-minimal betti: " << std::endl;
       mBettiNonminimal.output();
@@ -190,7 +190,7 @@ BettiDisplay SchreyerFrame::minimalBettiNumbers(bool stop_after_degree,
       computeRank(top_degree, lev);
     }
 
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       std::cout << "displaying stats" << std::endl;
       showMemoryUsage();
@@ -231,7 +231,7 @@ void SchreyerFrame::start_computation(StopConditions& stop)
   //  if (level(0).size() == 0)
   //    mState = Done;;
   computeFrame();
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       std::cout << "computation status after computing frame: " << std::endl;
       mComputationStatus.output();
@@ -243,7 +243,7 @@ void SchreyerFrame::start_computation(StopConditions& stop)
 
   computeSyzygies(top_slanted_degree, mMaxLength);
 
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       showMemoryUsage();
       std::cout << "total time for make matrix: " << timeMakeMatrix
@@ -266,7 +266,7 @@ void SchreyerFrame::start_computation(StopConditions& stop)
 
   return;
 #if 0  
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       std::cout << "computation status after computing syzygies: " << std::endl;
       mComputationStatus.output();
@@ -275,7 +275,7 @@ void SchreyerFrame::start_computation(StopConditions& stop)
   computeRanks(mHiSlantedDegree, mMaxLength);
   timeB = timer();
   timeComputeRanks += seconds(timeB-timeA);
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       std::cout << "computation status after computing ranks: " << std::endl;
       mComputationStatus.output();
@@ -296,7 +296,7 @@ void SchreyerFrame::start_computation(StopConditions& stop)
         break;
       case Frame:
         std::cerr << "ERROR: should not get to this point anymore..." << std::endl;
-        if (M2_gbTrace >= 1)
+        if (gbTrace >= 1)
           std::cout << "maxsize = " << mFrame.mLevels.size() << " and mCurrentLevel = " << mCurrentLevel << std::endl;
         if (mCurrentLevel >= mFrame.mLevels.size() or computeNextLevel() == 0)
           {
@@ -306,7 +306,7 @@ void SchreyerFrame::start_computation(StopConditions& stop)
             getBounds(mLoSlantedDegree, mHiSlantedDegree, mMaxLength);
             mSlantedDegree = mLoSlantedDegree;
             setBettiDisplays();
-            if (M2_gbTrace >= 1)
+            if (gbTrace >= 1)
               {
                 std::cout << "non-minimal betti: " << std::endl;
                 mBettiNonminimal.output();
@@ -320,7 +320,7 @@ void SchreyerFrame::start_computation(StopConditions& stop)
           }
         break;
       case Matrices:
-        if (M2_gbTrace >= 1)
+        if (gbTrace >= 1)
           std::cout << "start_computation: entering matrices(" << mSlantedDegree << ", " << mCurrentLevel << ")" << std::endl;
         if (stop.always_stop) return;
         
@@ -330,7 +330,7 @@ void SchreyerFrame::start_computation(StopConditions& stop)
             mSlantedDegree++;
             if (mSlantedDegree > top_slanted_degree)
               {
-                if (M2_gbTrace >= 1)
+                if (gbTrace >= 1)
                   showMemoryUsage();
 #if 0                
                 debugCheckOrderAll();
@@ -345,19 +345,19 @@ void SchreyerFrame::start_computation(StopConditions& stop)
                 timeB = timer();
                 timeComputeRanks += seconds(timeB-timeA);
                 mState = Done;
-                if (M2_gbTrace >= 1)
+                if (gbTrace >= 1)
                   mBettiMinimal.output();
                  break;
               }
             //            if (stop.stop_after_degree and mSlantedDegree > stop.degree_limit->array[0])
             //              return;
           }
-        if (M2_gbTrace >= 2)
+        if (gbTrace >= 2)
           {
             std::cout << "construct(" << mSlantedDegree << ", " << mCurrentLevel << ")..." << std::flush;
           }
         mComputer->construct(mCurrentLevel, mSlantedDegree+mCurrentLevel);
-        if (M2_gbTrace >= 2)
+        if (gbTrace >= 2)
           {
             std::cout << "done" << std::endl;
           }
@@ -365,7 +365,7 @@ void SchreyerFrame::start_computation(StopConditions& stop)
         mCurrentLevel++;
         break;
       case Done:
-        if (M2_gbTrace >= 1)
+        if (gbTrace >= 1)
           {
             std::cout << "total time for make matrix: " << timeMakeMatrix << std::endl;
             std::cout << "total time for sort matrix: " << timeSortMatrix << std::endl;
@@ -600,7 +600,7 @@ bool SchreyerFrame::insertLevelOne(res_packed_monomial monom,
   p.mEnd = last;
   if (!check_poly(ring(), syzygy, schreyerOrder(0)))
     {
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         {
           std::cout
               << "Error: expected terms of polynomial to be in order, in poly#"
@@ -885,7 +885,7 @@ void SchreyerFrame::fillinSyzygies(int slanted_deg, int lev)
   int& status = mComputationStatus.entry(slanted_deg, lev);
   if (status != 1) return;
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       std::cout << "construct(" << slanted_deg << ", " << lev << ")..."
                 << std::flush;
@@ -893,7 +893,7 @@ void SchreyerFrame::fillinSyzygies(int slanted_deg, int lev)
   mComputer->construct(lev, slanted_deg + lev);
   status = 2;
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       std::cout << "done" << std::endl;
       std::cout << "#additions so far: " << gausser().getNumAdditions()

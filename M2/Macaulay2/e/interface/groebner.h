@@ -36,6 +36,9 @@ typedef struct RingMap RingMap;
 extern "C" {
 #  endif
 
+//replaces M2_gbTrace
+extern int gbTrace;
+
 void test_over_RR_or_CC(const Ring *R);
 
 /////////////////

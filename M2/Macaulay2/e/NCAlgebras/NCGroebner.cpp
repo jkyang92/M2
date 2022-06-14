@@ -7,7 +7,6 @@
 #include "NCAlgebras/Word.hpp"          // for Word
 #include "NCAlgebras/WordTable.hpp"     // for Overlap, WordTable
 #include "buffer.hpp"                   // for buffer
-#include "engine-exports.h"             // for M2_gbTrace, newline
 #include "myalloc.hpp"                  // for operator<<, AllocLogger
 #include "ring.hpp"                     // for Ring
 #include "ringelem.hpp"                 // for ring_elem
@@ -28,7 +27,7 @@ NCGroebner::NCGroebner(const FreeAlgebra& A,
     mTopComputedDegree(-1),
     mHardDegreeLimit(hardDegreeLimit)
 {
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       buffer o;
       o << "[NCGB] reduction heap:  "
@@ -50,7 +49,7 @@ NCGroebner::NCGroebner(const FreeAlgebra& A,
                            true,
                            std::make_tuple(i,-1,-1,true));
     }
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       buffer o;
       o << "[NCGB] input is " << (mIsGraded ? "homogeneous" : "inhomogeneous") << newline;
@@ -73,7 +72,7 @@ void NCGroebner::computeHomogeneous(int softDegreeLimit)
     {
       auto degSet = mOverlapTable.nextDegreeOverlaps();
       auto toBeProcessed = degSet.second;
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         {
           buffer o;
           o << "[" << degSet.first << "](" << toBeProcessed->size() << ")";
@@ -87,7 +86,7 @@ void NCGroebner::computeHomogeneous(int softDegreeLimit)
           if (std::get<1>(overlap) != -1 && !isOverlapNecessary(overlap))
             {
               toBeProcessed->pop_front();
-              if (M2_gbTrace >= 3)
+              if (gbTrace >= 3)
                 {
                   std::cout << "Reduction avoided using 2nd criterion." << std::endl;
                   std::cout << "table after pop:";
@@ -111,7 +110,7 @@ void NCGroebner::computeHomogeneous(int softDegreeLimit)
           else
             {
               // if reduction is zero
-              if (M2_gbTrace >= 4)
+              if (gbTrace >= 4)
                 {
                   std::cout << "Overlap " << overlap << " reduced to zero."
                             << std::endl;
@@ -122,7 +121,7 @@ void NCGroebner::computeHomogeneous(int softDegreeLimit)
       // remove the lowest degree overlaps from the overlap table
       mOverlapTable.removeLowestDegree();
     }
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       buffer o;
       o << "[NCGB] number of spair reductions: " << n_spairs;
@@ -137,7 +136,7 @@ void NCGroebner::computeInhomogeneous(int softDegreeLimit)
     {
       auto degSet = mOverlapTable.nextDegreeOverlaps();
       auto toBeProcessed = degSet.second;
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         {
           buffer o;
           o << "[" << degSet.first << "](" << toBeProcessed->size() << ")";
@@ -151,7 +150,7 @@ void NCGroebner::computeInhomogeneous(int softDegreeLimit)
           if (std::get<1>(overlap) != -1 && !isOverlapNecessary(overlap))
             {
               toBeProcessed->pop_front();
-              if (M2_gbTrace >= 2)
+              if (gbTrace >= 2)
                 {
                   std::cout << "Reduction avoided using 2nd criterion." << std::endl;
                   std::cout << "table after pop:";
@@ -175,7 +174,7 @@ void NCGroebner::computeInhomogeneous(int softDegreeLimit)
           else
             {
               // if reduction is zero
-              if (M2_gbTrace >= 4)
+              if (gbTrace >= 4)
                 {
                   std::cout << "Overlap " << overlap << " reduced to zero."
                             << std::endl;
@@ -186,7 +185,7 @@ void NCGroebner::computeInhomogeneous(int softDegreeLimit)
       // remove the lowest degree overlaps from the overlap table
       mOverlapTable.removeLowestDegree();
     }
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       buffer o;
       o << "[NCGB] number of spair reductions: " << n_spairs;
@@ -314,7 +313,7 @@ auto NCGroebner::twoSidedReduction(const Poly* reducee) const -> Poly*
           mHeap->removeLeadTerm();
         }
     }
-  if (M2_gbTrace >= 5)
+  if (gbTrace >= 5)
     {
       std::cout << "reduction: " << "#steps: " << loop_count << " " << FreeMonoidLogger() << std::endl;
       std::cout << "           " << "#terms: " << nterms << std::endl;
@@ -451,7 +450,7 @@ auto NCGroebner::insertNewOverlaps(std::vector<Overlap>& newOverlaps) -> void
          }
        else
          {
-           if (M2_gbTrace >= 3)
+           if (gbTrace >= 3)
              {
                std::cout << "Reduction avoided using 2nd criterion." << std::endl;
              }

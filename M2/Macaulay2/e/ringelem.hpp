@@ -4,9 +4,6 @@
 #define _ringelem_hh_
 
 #include <stddef.h>
-#if !defined(SAFEC_EXPORTS)
-#include <engine-exports.h>
-#endif
 #include "interface/gmp-util.h"
 #include "newdelete.hpp"
 

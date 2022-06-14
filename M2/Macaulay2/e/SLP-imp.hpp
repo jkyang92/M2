@@ -438,7 +438,7 @@ bool HomotopyConcrete<RT, FixedPrecisionHomotopyAlgorithm>::track(
       // track the real segment (1-t)*c0 + t*c1, a\in [0,1]
       while (status == PROCESSING and not t0equals1)
         {
-          if (M2_numericalAlgebraicGeometryTrace > 3)
+          if (numericalAlgebraicGeometryTrace > 3)
             {
               buffer o;
               R.elem_text_out(o, t0, true, false, false);
@@ -654,9 +654,9 @@ bool HomotopyConcrete<RT, FixedPrecisionHomotopyAlgorithm>::track(
               int more_bits = int(log2(fabs(R.coerceToDouble(dx_norm2)))) / 2;
               int precision_needed = PRECISION_SAFETY_BITS + tolerance_bits + more_bits;
               if (precision_needed<53) precision_needed = 53;
-              if (M2_numericalAlgebraicGeometryTrace > 3)
-                std::cout << "precision needed = " << precision_needed << " = " 
-                          << PRECISION_SAFETY_BITS << "(safety) + " 
+              if (numericalAlgebraicGeometryTrace > 3)
+                std::cout << "precision needed = " << precision_needed << " = "
+                          << PRECISION_SAFETY_BITS << "(safety) + "
                           << tolerance_bits << "(tolerance) + "
                           << more_bits << "(additional)\n"
                           << "current precision = " << R.get_precision() << std::endl;
@@ -665,7 +665,7 @@ bool HomotopyConcrete<RT, FixedPrecisionHomotopyAlgorithm>::track(
               else if (R.get_precision() != 53 and
                        R.get_precision() > 2 * precision_needed)
                 status = DECREASE_PRECISION;
-              if (M2_numericalAlgebraicGeometryTrace > 3)
+              if (numericalAlgebraicGeometryTrace > 3)
                 std::cout << "status = " << status << std::endl;
             };
 
@@ -721,7 +721,7 @@ bool HomotopyConcrete<RT, FixedPrecisionHomotopyAlgorithm>::track(
   R.clear(infinity_threshold2);
 
   std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-  if (M2_numericalAlgebraicGeometryTrace > 1)
+  if (numericalAlgebraicGeometryTrace > 1)
     {
       std::cout << "-- track took "
                 << std::chrono::duration_cast<std::chrono::milliseconds>(end -

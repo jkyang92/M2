@@ -1441,7 +1441,7 @@ void GBRing::gbvector_auto_reduce(const FreeModule *F,
       gbvector_add_to(Fsyz, fsyz, gsyz1);
       gbvector_remove_content(f, fsyz);
 
-      if (M2_gbTrace == 10)
+      if (gbTrace == 10)
         {
           buffer o;
           o << "auto reducing by ";
@@ -1477,7 +1477,7 @@ void GBRing::gbvector_auto_reduce_ZZ(const FreeModule *F,
       gbvector_add_to(F, f, g1);
       gbvector_add_to(Fsyz, fsyz, gsyz1);
 
-      if (M2_gbTrace == 10)
+      if (gbTrace == 10)
         {
           buffer o;
           o << "auto reducing by ";

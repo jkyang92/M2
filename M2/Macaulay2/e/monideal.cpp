@@ -572,7 +572,7 @@ void MonomialIdeal::text_out(buffer &o) const
       const int *n = operator[](j)->monom().raw();
       M->from_varpower(n, m);
       M->elem_text_out(o, m);
-      if (M2_gbTrace > 0) o << '(' << operator[](j)->basis_elem() << ")";
+      if (gbTrace > 0) o << '(' << operator[](j)->basis_elem() << ")";
       o << ' ';
     }
   M->remove(m);

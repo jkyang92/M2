@@ -52,7 +52,7 @@ template <typename ValueType>
 void MonomialHashTable<ValueType>::grow()
 {
   // Increase logsize, reset fields, and repopulate new hash table.
-  //  if (M2_gbTrace >= 2) dump();
+  //  if (gbTrace >= 2) dump();
   std::unique_ptr<value[]> oldtab = std::move(hashtab);
   long oldsize = size;
   initialize(logsize + 1);

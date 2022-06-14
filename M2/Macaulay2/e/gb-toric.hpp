@@ -370,7 +370,7 @@ class binomialGB_comp : public GBComputation
 
   virtual void text_out(buffer &o) const { /* to do */}
   /* This displays statistical information, and depends on the
-     M2_gbTrace value */
+     gbTrace value */
 
   virtual int complete_thru_degree() const { return top_degree; }
   // The computation is complete up through this degree.

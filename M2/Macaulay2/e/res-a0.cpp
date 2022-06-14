@@ -111,7 +111,7 @@ enum ComputationStatusCode res2_comp::do_pairs(int level, int degree)
   // If this number is 0, continue
   res2_pair *p;
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       p = resn[level]->next_pair;
       int nelems = 0;
@@ -152,7 +152,7 @@ enum ComputationStatusCode res2_comp::do_pairs_by_level(int level)
 
   res2_pair *p;
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       int nelems = resn[level]->nleft;
       if (nelems > 0)
@@ -199,7 +199,7 @@ enum ComputationStatusCode res2_comp::do_pairs_by_level(int level)
           g->next = NULL;
           p->pivot_term = head.next;
         }
-      if (M2_gbTrace >= 3)
+      if (gbTrace >= 3)
         {
           buffer o;
           o << "[kept " << nmonoms << " killed " << nkilled << "]";
@@ -216,7 +216,7 @@ enum ComputationStatusCode res2_comp::do_pairs_by_degree(int level, int degree)
   // If this number is 0, continue
   res2_pair *p;
 
-  if (M2_gbTrace >= 2 && level > 1)
+  if (gbTrace >= 2 && level > 1)
     {
       p = resn[level]->next_pair;
       int nelems = 0;
@@ -281,7 +281,7 @@ void res2_comp::start_computation()
 
   for (level = 1; level <= length_limit + 1; level++) DO(skeleton(level));
 
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     {
       buffer o;
       o << "--- The total number of pairs in each level/slanted degree -----"
@@ -351,7 +351,7 @@ void res2_comp::start_computation()
               set_status(COMP_DONE_DEGREE_LIMIT);
               return;
             }
-          if (M2_gbTrace >= 1)
+          if (gbTrace >= 1)
             {
               buffer o;
               o << '{' << deg + lodegree << '}';
@@ -374,7 +374,7 @@ void res2_comp::start_computation()
           set_status(COMP_DONE_DEGREE_LIMIT);
           return;
         }
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         {
           buffer o;
           o << '{' << deg + lodegree << '}';
@@ -396,7 +396,7 @@ void res2_comp::start_computation()
 //        set_status(COMP_DONE_DEGREE_LIMIT);
 //        return;
 //      }
-//       if (M2_gbTrace >= 1)
+//       if (gbTrace >= 1)
 //      {
 //        buffer o;
 //        o << '{' << deg+lodegree << '}';
@@ -505,7 +505,7 @@ void res2_comp::initialize(const Matrix *mat,
   use_respolyHeaps = (unsigned char)(SortStrategy & FLAGS_GEO ? 1 : 0);
 
   if (do_by_degree) do_by_level = 0;
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     {
       buffer o;
       o << "auto-reduce level = " << auto_reduce << newline;
@@ -959,7 +959,7 @@ void res2_comp::new_pairs(res2_pair *p)
 
   monomial PAIRS_mon = ALLOCATE_MONOMIAL(monom_size);
 
-  if (M2_gbTrace >= 10)
+  if (gbTrace >= 10)
     {
       buffer o;
       o << "Computing pairs with first = " << p->pair_num << newline;
@@ -1032,7 +1032,7 @@ void res2_comp::new_pairs(res2_pair *p)
   MonomialIdeal mi(P, elems, rejects);
   while (rejects.remove(b)) delete b;
 
-  if (M2_gbTrace >= 11) mi.debug_out(1);
+  if (gbTrace >= 11) mi.debug_out(1);
 
   int *m = M->make_one();
   for (j = mi.first(); j.valid(); j++)
@@ -1072,7 +1072,7 @@ int res2_comp::find_divisor(const MonomialIdeal *mi,
   if (bb.size() == 0) return 0;
   result = reinterpret_cast<res2_pair *>((bb[0]->basis_ptr()));
   // Now search through, and find the best one.  If only one, just return it.
-  if (M2_gbTrace >= 5)
+  if (gbTrace >= 5)
     if (mi->length() > 1)
       {
         buffer o;
@@ -1147,7 +1147,7 @@ res2_pair *res2_comp::reduce(res2term *&f,
   //  Bag *b;
 
   int count = 0;
-  if (M2_gbTrace >= 4) emit_wrapped(",");
+  if (gbTrace >= 4) emit_wrapped(",");
 
   while (f != NULL)
     {
@@ -1171,7 +1171,7 @@ res2_pair *res2_comp::reduce(res2term *&f,
           pivot = lastterm;
           if (q->syz_type == SYZ2_S_PAIR || q->syz_type == SYZ2_MAYBE_MINIMAL)
             {
-              if (M2_gbTrace >= 4)
+              if (gbTrace >= 4)
                 {
                   buffer o;
                   o << count;
@@ -1192,7 +1192,7 @@ res2_pair *res2_comp::reduce(res2term *&f,
           R->remove(tmp);
         }
     }
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << count;
@@ -1223,7 +1223,7 @@ res2_pair *res2_comp::reduce2(res2term *&f,
   ring_elem rg;
 
   int count = 0;
-  if (M2_gbTrace >= 4) emit_wrapped(",");
+  if (gbTrace >= 4) emit_wrapped(",");
 
   while (f != NULL)
     {
@@ -1298,7 +1298,7 @@ res2_pair *res2_comp::reduce2(res2term *&f,
     }
   red->next = NULL;
   f = head.next;
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << count;
@@ -1336,7 +1336,7 @@ res2_pair *res2_comp::reduce3(res2term *&f,
   //  Bag *b;
 
   int count = 0;
-  if (M2_gbTrace >= 4) emit_wrapped(",");
+  if (gbTrace >= 4) emit_wrapped(",");
 
   while ((lead = fb.remove_lead_term()) != NULL)
     {
@@ -1394,7 +1394,7 @@ res2_pair *res2_comp::reduce3(res2term *&f,
     }
   red->next = NULL;
   f = head.next;
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << count;
@@ -1427,7 +1427,7 @@ res2_pair *res2_comp::reduce4(res2term *&f,
   ring_elem rg;
 
   int count = total_reduce_count;
-  if (M2_gbTrace >= 4) emit_wrapped(",");
+  if (gbTrace >= 4) emit_wrapped(",");
 
   while (f != NULL)
     {
@@ -1489,7 +1489,7 @@ res2_pair *res2_comp::reduce4(res2term *&f,
     }
   red->next = NULL;
   f = head.next;
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << (total_reduce_count - count);
@@ -1514,7 +1514,7 @@ res2_pair *res2_comp::reduce_by_level(res2term *&f, res2term *&fsyz)
   ring_elem rg;
 
   int count = 0;
-  if (M2_gbTrace >= 4) emit_wrapped(",");
+  if (gbTrace >= 4) emit_wrapped(",");
 
   while (f != NULL)
     {
@@ -1546,7 +1546,7 @@ res2_pair *res2_comp::reduce_by_level(res2term *&f, res2term *&fsyz)
           R->remove(tmp);
         }
     }
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << count;
@@ -1571,7 +1571,7 @@ res2_pair *res2_comp::reduce_heap_by_level(res2term *&f, res2term *&fsyz)
   res2term *lead;
 
   int count = 0;
-  if (M2_gbTrace >= 4) emit_wrapped(",");
+  if (gbTrace >= 4) emit_wrapped(",");
 
   while ((lead = fb.remove_lead_term()) != NULL)
     {
@@ -1609,7 +1609,7 @@ res2_pair *res2_comp::reduce_heap_by_level(res2term *&f, res2term *&fsyz)
         }
     }
   f = NULL;
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << count;
@@ -1658,7 +1658,7 @@ void res2_comp::handle_pair(res2_pair *p)
   if (p->level == 1)
     {
       p->syz_type = SYZ2_MINIMAL;
-      if (M2_gbTrace >= 2) emit_wrapped("z");
+      if (gbTrace >= 2) emit_wrapped("z");
       if (projdim == 0) projdim = 1;
       nminimal++;
       return;
@@ -1700,7 +1700,7 @@ void res2_comp::handle_pair(res2_pair *p)
           nminimal++;
           if (p->level > projdim) projdim = p->level;
         }
-      if (M2_gbTrace >= 2) emit_wrapped("z");
+      if (gbTrace >= 2) emit_wrapped("z");
     }
   else
     {
@@ -1724,7 +1724,7 @@ void res2_comp::handle_pair(res2_pair *p)
         {
         }
 
-      if (M2_gbTrace >= 2) emit_wrapped("m");
+      if (gbTrace >= 2) emit_wrapped("m");
     }
 }
 
@@ -1737,7 +1737,7 @@ void res2_comp::handle_pair_by_level(res2_pair *p)
   if (p->level == 1)
     {
       p->syz_type = SYZ2_MINIMAL;
-      if (M2_gbTrace >= 2) emit_wrapped("z");
+      if (gbTrace >= 2) emit_wrapped("z");
       return;
     }
 
@@ -1755,7 +1755,7 @@ void res2_comp::handle_pair_by_level(res2_pair *p)
   if (f == NULL)
     {
       p->syz_type = SYZ2_MINIMAL;
-      if (M2_gbTrace >= 2) emit_wrapped("z");
+      if (gbTrace >= 2) emit_wrapped("z");
     }
   else
     {
@@ -1780,7 +1780,7 @@ void res2_comp::handle_pair_by_degree(res2_pair *p)
       if (p->syz_type != SYZ2_NOT_NEEDED)
         {
           p->syz_type = SYZ2_MINIMAL;
-          if (M2_gbTrace >= 2) emit_wrapped("z");
+          if (gbTrace >= 2) emit_wrapped("z");
           nminimal++;
         }
       return;
@@ -1799,18 +1799,18 @@ void res2_comp::handle_pair_by_degree(res2_pair *p)
           p->syz_type = SYZ2_MINIMAL;
           nminimal++;
           resn[p->level]->nminimal++;
-          if (M2_gbTrace >= 2) emit_wrapped("z");
+          if (gbTrace >= 2) emit_wrapped("z");
         }
       else
         {
-          if (M2_gbTrace >= 2) emit_wrapped("o");
+          if (gbTrace >= 2) emit_wrapped("o");
         }
     }
   else
     {
       p->syz_type = SYZ2_NOT_MINIMAL;
       q->syz_type = SYZ2_NOT_NEEDED;
-      if (M2_gbTrace >= 2) emit_wrapped("m");
+      if (gbTrace >= 2) emit_wrapped("m");
     }
 }
 
@@ -1983,7 +1983,7 @@ void res2_comp::text_out(buffer &o, const res2_pair *p) const
 #endif
   M->elem_text_out(o, p->syz->monom);
   o << " [" << R->n_terms(p->syz) << "] ";
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       // Display the vector
       o << " syz: ";
@@ -2013,7 +2013,7 @@ void res2_comp::text_out(buffer &o) const
   o << "--- (Lower bounds of) the minimal betti numbers ----------" << newline;
   a = betti_minimal();
   betti_display(o, a);
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       o << "-- #Reduction steps = " << total_reduce_count << "--"
         << " ones " << n_ones << " unique " << n_unique << " others "
@@ -2025,7 +2025,7 @@ void res2_comp::text_out(buffer &o) const
     }
 
   // If the printlevel is high enough, display each element
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     for (int lev = 0; lev < resn.size(); lev++)
       {
         if (resn[lev]->pairs == NULL) continue;

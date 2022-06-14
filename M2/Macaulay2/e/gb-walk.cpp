@@ -259,14 +259,14 @@ int GBWalker::contains(const Matrix *m)
 
 void GBWalker::text_out(buffer &o) const
 /* This displays statistical information, and depends on the
-   M2_gbTrace value */
+   gbTrace value */
 {
   // MES: TO WRITE
 }
 
 void GBWalker::show() const
 /* This displays statistical information, and depends on the
-   M2_gbTrace value */
+   gbTrace value */
 {
   // MES: TO WRITE
 }

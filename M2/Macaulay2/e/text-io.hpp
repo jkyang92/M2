@@ -15,7 +15,7 @@ void clear_emit_size();
 void emit_wrapped(const char *s);
 inline void emit_wrapped(int prlevel, const char *s)
 {
-  if (M2_gbTrace >= prlevel) emit_wrapped(s);
+  if (gbTrace >= prlevel) emit_wrapped(s);
 }
 
 void emit(const char *s);       // print onto stderr, or cerr.

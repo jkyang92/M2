@@ -128,7 +128,7 @@ int MonomialTableZZ::find_divisors(int max,
             if (max >= 0 && nmatches >= max) break;
           }
       }
-  if (M2_gbTrace == 15 && nmatches >= 2)
+  if (gbTrace == 15 && nmatches >= 2)
     {
       buffer o;
       o << "find_term_divisors called on ";
@@ -177,7 +177,7 @@ int MonomialTableZZ::find_term_divisors(int max,
             if (max >= 0 && nmatches >= max) break;
           }
       }
-  if (M2_gbTrace == 15 && nmatches >= 2)
+  if (gbTrace == 15 && nmatches >= 2)
     {
       buffer o;
       o << "find_term_divisors called on ";
@@ -309,7 +309,7 @@ int MonomialTableZZ::find_monomial_divisors(int max,
           }
       }
 
-  if (M2_gbTrace == 15 && nmatches >= 2)
+  if (gbTrace == 15 && nmatches >= 2)
     {
       buffer o;
       o << "find_monomial_divisors called on ";

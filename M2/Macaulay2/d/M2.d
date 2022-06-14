@@ -140,17 +140,13 @@ export substrAlwaysCopy(x:string,start:int,leng:int):string := Ccode(returns, "
   GC_CHECK_CLOBBER(p);
   return p;");
 
-declarations " extern char newline[]; ";
-header " char newline[] = \"\\n\"; ";
+declarations " extern const char newline[]; ";
 export newline := tostring(Ccode(constcharstarOrNull,"newline"));
 export envc := 0;
 export argc := 0;
 export envp := array(string)();
 export argv := array(string)();
 export args := array(string)();
-export gbTrace := 0;
-export numTBBThreads := 0; -- 0 means use the maximum
-export numericalAlgebraicGeometryTrace := 0;
 export notify := false;
 export readonlyfiles := false;				    -- see stdio.d
 

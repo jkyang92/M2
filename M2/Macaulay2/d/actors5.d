@@ -1656,9 +1656,9 @@ syms := SymbolSequence(
      (  debuggingModeS = setupvarThread("debuggingMode",toExpr(debuggingMode));  debuggingModeS  ),
      (  defaultPrecisionS = setupvar("defaultPrecision",toExpr(defaultPrecision));  defaultPrecisionS  ),
      (  errorDepthS = setupvar("errorDepth",toExpr(errorDepth));  errorDepthS  ),
-     (  gbTraceS = setupvar("gbTrace",toExpr(gbTrace));  gbTraceS  ), 
-     (  numTBBThreadsS = setupvar("numTBBThreads",toExpr(numTBBThreads));  numTBBThreadsS  ),
-     (  numericalAlgebraicGeometryTraceS = setupvar("numericalAlgebraicGeometryTrace",toExpr(numericalAlgebraicGeometryTrace));  numericalAlgebraicGeometryTraceS  ),
+     (  gbTraceS = setupvar("gbTrace",toExpr(Ccode(int,"gbTrace")));  gbTraceS  ),
+     (  numTBBThreadsS = setupvar("numTBBThreads",toExpr(Ccode(int,"numTBBThreads")));  numTBBThreadsS  ),
+     (  numericalAlgebraicGeometryTraceS = setupvar("numericalAlgebraicGeometryTrace",toExpr(Ccode(int,"numericalAlgebraicGeometryTrace")));  numericalAlgebraicGeometryTraceS  ),
      (  debuggerHookS = setupvar("debuggerHook",debuggerHook);  debuggerHookS  ),
      (  lineNumberS = setupvar("lineNumber",toExpr(lineNumber));  lineNumberS  ),
      (  allowableThreadsS = setupvar("allowableThreads",toExpr(Ccode( int, " getAllowableThreads() " )));  allowableThreadsS  ),
@@ -1774,9 +1774,9 @@ store(e:Expr):Expr := (			    -- called with (symbol,newvalue)
 		    else if sym === recursionLimitS then (recursionLimit = n; e)
 		    else if sym === lineNumberS then (lineNumber = n; e)
 		    else if sym === numTBBThreadsS then (
-			 if n < 0 then return buildErrorPacket("numTBBThreads cannot be set to negative value");
-             numTBBThreads = n;
-             e)
+                        if n < 0 then return buildErrorPacket("numTBBThreads cannot be set to negative value");
+                        Ccode(int,"numTBBThreads = ",n);
+                        e)
 		    else if sym === allowableThreadsS then (
 			 if n < 1 || n > Ccode( int, " getMaxAllowableThreads() " ) 
 			 then return buildErrorPacket("allowableThreads: expected integer in range 1 .. " + tostring(Ccode( int, " getMaxAllowableThreads() " )));
@@ -1792,8 +1792,10 @@ store(e:Expr):Expr := (			    -- called with (symbol,newvalue)
 			 e)
 		    else if sym === printingLeadLimitS then (printingLeadLimit = n; e)
 		    else if sym === printingTrailLimitS then (printingTrailLimit = n; e)
-		    else if sym === gbTraceS then (gbTrace = n; e)
-		    else if sym === numericalAlgebraicGeometryTraceS then (numericalAlgebraicGeometryTrace = n; e)
+		    else if sym === gbTraceS then (Ccode(int,"gbTrace = ", n); e)
+		    else if sym === numericalAlgebraicGeometryTraceS then (
+                         Ccode(int,"numericalAlgebraicGeometryTrace = ", n);
+                         e)
 		    else if sym === printWidthS then (printWidth = n; e)
 		    else buildErrorPacket(msg))
 	       else buildErrorPacket(

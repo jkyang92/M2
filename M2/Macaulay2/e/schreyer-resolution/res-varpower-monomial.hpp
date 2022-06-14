@@ -8,10 +8,6 @@
 #include <stdio.h>                 // for FILE
 #include <vector>                  // for vector
 
-#if !defined(SAFEC_EXPORTS)
-#include <engine-exports.h> // for M2_gbTrace
-#endif
-
 class res_varpower_monomials
 {
  public:

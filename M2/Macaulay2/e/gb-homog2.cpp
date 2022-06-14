@@ -349,7 +349,7 @@ void GB_comp::find_pairs(gb_elem *p)
           if (_M->is_one(find_pairs_m))
             {
               _n_saved_gcd++;
-              if (M2_gbTrace >= 8)
+              if (gbTrace >= 8)
                 {
                   buffer o;
                   o << "removed pair[" << q->first->me << " " << q->second->me
@@ -401,7 +401,7 @@ void GB_comp::gb_reduce(gbvector *&f, gbvector *&fsyz)
 
   int *div_totalexp = newarray_atomic(int, _M->n_vars());
   int count = 0;
-  if (M2_gbTrace == 10)
+  if (gbTrace == 10)
     {
       buffer o;
       o << "reducing ";
@@ -429,7 +429,7 @@ void GB_comp::gb_reduce(gbvector *&f, gbvector *&fsyz)
               _F, _Fsyz, head.next, f, fsyz, q->f, q->fsyz);
           count++;
           _n_reductions++;
-          if (M2_gbTrace == 10)
+          if (gbTrace == 10)
             {
               buffer o;
               o << "  reduced by ";
@@ -450,7 +450,7 @@ void GB_comp::gb_reduce(gbvector *&f, gbvector *&fsyz)
         }
     }
 
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << "." << count;
@@ -517,7 +517,7 @@ void GB_comp::gb_geo_reduce(gbvector *&f, gbvector *&fsyz)
         }
     }
 
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       buffer o;
       o << "." << count;
@@ -605,7 +605,7 @@ int GB_comp::s_pair_step()
       return SPAIR_DONE;
     }
 
-  if (M2_gbTrace == 100)
+  if (gbTrace == 100)
     {
       // Traces the computation, in its way
       emit("Computing spair ");
@@ -623,7 +623,7 @@ int GB_comp::s_pair_step()
   gb_reduce(f, fsyz);
   if (!_GR->gbvector_is_zero(f))
     {
-      if (M2_gbTrace == 100)
+      if (gbTrace == 100)
         {
           buffer o;
           o << "  inserting GB element " << _n_gb;
@@ -847,7 +847,7 @@ void GB_comp::start_computation()
                   }
                 if (_hilb_n_in_degree == 0) flush_pairs(_this_degree);
               }
-            if (M2_gbTrace >= 1)
+            if (gbTrace >= 1)
               {
                 buffer o;
                 o << '{' << _this_degree << '}';
@@ -865,7 +865,7 @@ void GB_comp::start_computation()
             break;
 
           case GB_COMP_S_PAIRS:
-            if (M2_gbTrace < 2)
+            if (gbTrace < 2)
               {
                 if (s_pair_step() == SPAIR_DONE) _state = GB_COMP_GENS;
               }
@@ -894,7 +894,7 @@ void GB_comp::start_computation()
             break;
 
           case GB_COMP_GENS:
-            if (M2_gbTrace < 2)
+            if (gbTrace < 2)
               {
                 if (gen_step() == SPAIR_DONE) _state = GB_COMP_AUTO_REDUCE;
               }
@@ -945,8 +945,8 @@ void GB_comp::start_computation()
             break;
         }
     }
-  if (M2_gbTrace >= 1) emit_line("");
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 1) emit_line("");
+  if (gbTrace >= 4)
     {
       buffer o;
       o << "Number of gb elements       = " << _n_gb << newline;
@@ -1176,10 +1176,10 @@ int GB_comp::complete_thru_degree() const
 
 void GB_comp::text_out(buffer &o) const
 /* This displays statistical information, and depends on the
-   M2_gbTrace value */
+   gbTrace value */
 {
   _spairs->stats();
-  if (M2_gbTrace >= 5 && M2_gbTrace % 2 == 1)
+  if (gbTrace >= 5 && gbTrace % 2 == 1)
     for (int i = 0; i < _gb.size(); i++)
       {
         o << i << '\t';

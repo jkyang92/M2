@@ -327,7 +327,7 @@ ring_elem PolyRingQuotient::ann(const ring_elem a, const ring_elem b) const
 
   const Matrix *mrem, *mquot;
   G->matrix_lift(ma, &mrem, &mquot);
-  // if (M2_gbTrace >= 2)
+  // if (gbTrace >= 2)
   //   {
   //     emit("ann a=");
   //     dringelem(this, a);

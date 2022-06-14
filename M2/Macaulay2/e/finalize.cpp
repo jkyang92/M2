@@ -53,7 +53,7 @@ extern "C" void remove_monideal(void *p, void *cd)
 #endif
   MonomialIdeal *G = static_cast<MonomialIdeal *>(p);
   AO_t nremoved = AO_fetch_and_add1(&monideals_nremoved);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr, "\n -- removing monomial ideal %zd at %p\n", nremoved, G);
   G->remove_MonomialIdeal();
 }
@@ -65,7 +65,7 @@ void intern_monideal(MonomialIdeal *G)
   GC_REGISTER_FINALIZER(G,                    remove_monideal, 0, 0, 0);
 #endif
   AO_t nfinalized = AO_fetch_and_add1(&monideals_nfinalized);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr,
             "\n   -- registering monomial ideal %zd at %p\n",
             nfinalized,
@@ -79,7 +79,7 @@ extern "C" void remove_polyring(void *p, void *cd)
 #endif
   PolynomialRing *G = static_cast<PolynomialRing *>(p);
   AO_t nremoved = AO_fetch_and_add1(&polyrings_nremoved);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr, "\n -- removing polynomial ring %zd at %p\n", nremoved, G);
   G->clear();
 }
@@ -91,7 +91,7 @@ void intern_polyring(const PolynomialRing *G)
   GC_REGISTER_FINALIZER_IGNORE_SELF(                  const_cast<PolynomialRing *>(G) , remove_polyring, 0, 0, 0);
 #endif
   AO_t nfinalized = AO_fetch_and_add1(&polyrings_nfinalized);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr,
             "\n   -- registering polynomial ring %zd at %p\n",
             nfinalized,
@@ -105,7 +105,7 @@ extern "C" void remove_gb(void *p, void *cd)
 #endif
   GBComputation *G = static_cast<GBComputation *>(p);
   AO_t nremoved = AO_fetch_and_add1(&gbs_nremoved);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr, "\n --removing gb %zd at %p\n", nremoved, G);
   G->remove_gb();
 }
@@ -117,7 +117,7 @@ void intern_GB(GBComputation *G)
   GC_REGISTER_FINALIZER_IGNORE_SELF(                  G , remove_gb, 0, 0, 0);
 #endif
   AO_t nfinalized = AO_fetch_and_add1(&gbs_nfinalized);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     {
       // -- there is no gettid under Solaris
       // int tid = static_cast<int>(syscall(SYS_gettid));
@@ -135,7 +135,7 @@ extern "C" void remove_res(void *p, void *cd)
 #endif
   ResolutionComputation *G = static_cast<ResolutionComputation *>(p);
   AO_t nremoved = AO_fetch_and_add1(&res_nremoved);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr, "\n -- removing res %zd at %p\n", nremoved, G);
   delete G;
 }
@@ -147,7 +147,7 @@ void intern_res(ResolutionComputation *G)
   GC_REGISTER_FINALIZER(                  G , remove_res, 0, 0, 0);
 #endif
   AO_t nfinalized = AO_fetch_and_add1(&res_nfinalized);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(
         stderr, "\n   -- registering res %zd at %p\n", nfinalized, (void *)G);
 }
@@ -159,7 +159,7 @@ extern "C" void remove_SchreyerOrder(void *p, void *cd)
 #endif
   SchreyerOrder *G = static_cast<SchreyerOrder *>(p);
   AO_t nremoved = AO_fetch_and_add1(&schorder_nremoved);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr, "\n -- removing SchreyerOrder %zd at %p\n", nremoved, G);
   G->remove();
 }
@@ -171,7 +171,7 @@ void intern_SchreyerOrder(SchreyerOrder *G)
   GC_REGISTER_FINALIZER(                  G , remove_SchreyerOrder, 0, 0, 0);
 #endif
   AO_t nfinalized = AO_fetch_and_add1(&schorder_nfinalized);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr,
             "\n   -- registering SchreyerOrder %zd at %p\n",
             nfinalized,
@@ -186,7 +186,7 @@ extern "C" void remove_MutableMatrix(void *p, void *cd)
 #endif
   MutableMatrix *G = static_cast<MutableMatrix *>(p);
   AO_t nremoved = AO_fetch_and_add1(&mutablematrices_nremoved);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr, "\n -- removing mutable matrix %zd at %p\n", nremoved, G);
   G->~MutableMatrix();
 }
@@ -199,7 +199,7 @@ MutableMatrix *internMutableMatrix(MutableMatrix *G)
   GC_REGISTER_FINALIZER(                  G,  remove_MutableMatrix, 0, 0, 0);
 #endif
   AO_t nfinalized = AO_fetch_and_add1(&mutablematrices_nfinalized);
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr,
             "\n   -- registering mutable matrix %zd at %p\n",
             nfinalized,

@@ -3,7 +3,7 @@
 #include "res-moninfo-sparse.hpp"
 #include <cstdio>                                      // for fprintf, stderr
 #include <cstdlib>                                     // for rand
-#include "engine-exports.h"                            // for M2_gbTrace
+#include "engine-includes.hpp"
 #include "schreyer-resolution/res-monomial-types.hpp"  // for res_monomial_word
 
 ResMonoidSparse::ResMonoidSparse(int nvars,
@@ -39,13 +39,13 @@ ResMonoidSparse::ResMonoidSparse(int nvars,
     {
       //      mCompareFcn = &ResMonoidSparse::compare_lex;
 
-      if (M2_gbTrace >= 1) fprintf(stderr, "lex order\n");
+      if (gbTrace >= 1) fprintf(stderr, "lex order\n");
     }
   else if (moType == MonomialOrderingType::GRevLex)  // moIsGRevLex(mo)
     {
       //      mCompareFcn = &ResMonoidSparse::compare_grevlex;
 
-      if (M2_gbTrace >= 1) fprintf(stderr, "grevlex order\n");
+      if (gbTrace >= 1) fprintf(stderr, "grevlex order\n");
     }
   else
     {
@@ -53,7 +53,7 @@ ResMonoidSparse::ResMonoidSparse(int nvars,
       mNumWeights = static_cast<int>(mWeightVectors.size()) / nvars;
       //      mCompareFcn = &ResMonoidSparse::compare_weightvector;
 
-      if (M2_gbTrace >= 1) fprintf(stderr, "weight order\n");
+      if (gbTrace >= 1) fprintf(stderr, "weight order\n");
     }
 
   nslots = 3 + nvars + mNumWeights;

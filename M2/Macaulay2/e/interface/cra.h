@@ -3,6 +3,8 @@
 
 #  include "engine-includes.hpp"
 
+#include <gmp.h>
+
 // TODO: fix this
 #  if defined(__cplusplus)
 class Matrix;

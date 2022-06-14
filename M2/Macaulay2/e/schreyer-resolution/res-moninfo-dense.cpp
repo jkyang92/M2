@@ -38,14 +38,14 @@ ResMonoidDense::ResMonoidDense(int nvars0,
     {
       compare = &ResMonoidDense::compare_lex;
 
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         fprintf(stderr, "lex order\n");
     }
   else if (moType == MonomialOrderingType::GRevLex) // moIsGRevLex(mo)
     {
       compare = &ResMonoidDense::compare_grevlex;
 
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         fprintf(stderr, "grevlex order\n");
     }
   else
@@ -54,7 +54,7 @@ ResMonoidDense::ResMonoidDense(int nvars0,
       nweights = static_cast<int>(weight_vectors.size()) / nvars;
       compare = &ResMonoidDense::compare_weightvector;
 
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         fprintf(stderr, "weight order\n");
     }
 #endif

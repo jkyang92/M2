@@ -25,6 +25,8 @@
 
 class FreeModule;
 
+int numericalAlgebraicGeometryTrace = 0;
+
 // Straight Line Program classes
 
 // functions of the wrapper !!!
@@ -1654,7 +1656,7 @@ int PathTracker::track(const Matrix* start_sols)
   int n = n_coords = start_sols->n_cols();
   n_sols = start_sols->n_rows();
 
-  if (M2_numericalAlgebraicGeometryTrace > 1)
+  if (numericalAlgebraicGeometryTrace > 1)
     printf(
         "epsilon2 = %e, t_step = %lf, dt_min_dbl = %lf, dt_increase_factor_dbl "
         "= %lf, dt_decrease_factor_dbl = %lf\n",
@@ -1929,7 +1931,7 @@ int PathTracker::track(const Matrix* start_sols)
       evaluate_slpHxH(n, x0t0, HxH);
       cond_number_via_svd(n, HxH /*Hx*/, t_s->cond);
       t_s->num_steps = count;
-      if (M2_numericalAlgebraicGeometryTrace > 0)
+      if (numericalAlgebraicGeometryTrace > 0)
         {
           if (sol_n % 50 == 0) printf("\n");
           switch (t_s->status)
@@ -1952,7 +1954,7 @@ int PathTracker::track(const Matrix* start_sols)
           fflush(stdout);
         }
     }
-  if (M2_numericalAlgebraicGeometryTrace > 0) printf("\n");
+  if (numericalAlgebraicGeometryTrace > 0) printf("\n");
 
   // clear arrays
   // freemem(t_sols); // do not delete (same as raw_solutions)

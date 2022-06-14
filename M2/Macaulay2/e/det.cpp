@@ -158,7 +158,7 @@ int DetComputation::calc(int nsteps)
   for (;;)
     {
       int r = step();
-      if (M2_gbTrace >= 3) emit_wrapped(".");
+      if (gbTrace >= 3) emit_wrapped(".");
       if (r == COMP_DONE) return COMP_DONE;
       if (--nsteps == 0) return COMP_DONE_STEPS;
       if (system_interrupted()) return COMP_INTERRUPTED;

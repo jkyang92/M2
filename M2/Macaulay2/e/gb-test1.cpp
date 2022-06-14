@@ -527,7 +527,7 @@ void gbB::remove_unneeded_pairs(int id)
         spair *tmp = p->next;
         p->next = tmp->next;
         tmp->next = 0;
-        if (M2_gbTrace >= 10)
+        if (gbTrace >= 10)
           {
             buffer o;
             o << "removing unneeded ";
@@ -677,7 +677,7 @@ void gbB::minimalize_pairs(spairs &new_set)
           if (_is_ideal && is_gcd_one_pair(p))
             {
               stats_ngcd1++;
-              if ((M2_gbTrace & PRINT_SPAIR_TRACKING) != 0)
+              if ((gbTrace & PRINT_SPAIR_TRACKING) != 0)
                 {
                   buffer o;
                   o << "removing spair because of gcd: ";
@@ -688,7 +688,7 @@ void gbB::minimalize_pairs(spairs &new_set)
             }
           else
             {
-              if (M2_gbTrace >= 4)
+              if (gbTrace >= 4)
                 {
                   buffer o;
                   o << "    new ";
@@ -816,7 +816,7 @@ gbB::spair *gbB::spair_set_next()
     {
       if (S->spair_deferred_list.next != 0)
         {
-          if (M2_gbTrace >= 4)
+          if (gbTrace >= 4)
             {
               emit_line("considering deferred pairs: ");
             }
@@ -838,7 +838,7 @@ gbB::spair *gbB::spair_set_next()
             {
               if (S->gen_deferred_list.next != 0)
                 {
-                  if (M2_gbTrace >= 4)
+                  if (gbTrace >= 4)
                     {
                       emit_line("  deferred gen pairs: ");
                     }
@@ -866,11 +866,11 @@ void gbB::spair_set_defer(spair *&p)
 // The spair should have been reduced a number of times
 // already, so its type should be SPAIR_GEN or SPAIR_ELEM
 {
-  if (M2_gbTrace == 15)
+  if (gbTrace == 15)
     {
       emit_line("    deferred by reduction count");
     }
-  else if (M2_gbTrace >= 4)
+  else if (gbTrace >= 4)
     emit_wrapped("D");
   //  spair_delete(p); // ONLY FOR TESTING!! THIS IS INCORRECT!!
   //  return;
@@ -1057,7 +1057,7 @@ void gbB::spair_set_lead_spoly(spair *p)
 void gbB::compute_s_pair(spair *p)
 {
   POLY f, g;
-  if (M2_gbTrace >= 5 && M2_gbTrace != 15)
+  if (gbTrace >= 5 && gbTrace != 15)
     {
       buffer o;
       spair_text_out(o, p);
@@ -1080,7 +1080,7 @@ void gbB::compute_s_pair(spair *p)
           F, Fsyz, f.f, f.fsyz, g.f, g.fsyz, p->f(), p->fsyz());
     }
   p->type = SPAIR_ELEM;
-  if (M2_gbTrace >= 5 && M2_gbTrace != 15)
+  if (gbTrace >= 5 && gbTrace != 15)
     {
       buffer o;
       o << "    ";
@@ -1098,7 +1098,7 @@ bool gbB::reduceit(spair *p)
 
   int tmf, wt;
   int count = -1;
-  if (M2_gbTrace == 15)
+  if (gbTrace == 15)
     {
       buffer o;
       o << "considering ";
@@ -1115,7 +1115,7 @@ bool gbB::reduceit(spair *p)
           spair_set_defer(p);
           return false;
         }
-      if (M2_gbTrace >= 5)
+      if (gbTrace >= 5)
         {
           if ((wt = weightInfo->gbvector_weight(p->f(), tmf)) > this_degree)
             {
@@ -1152,7 +1152,7 @@ bool gbB::reduceit(spair *p)
                                    g.fsyz);
 
       stats_nreductions++;
-      if (M2_gbTrace == 15)
+      if (gbTrace == 15)
         {
           buffer o;
           o << "    reducing by g" << w;
@@ -1164,7 +1164,7 @@ bool gbB::reduceit(spair *p)
       if (gap > 0)
         {
           p->deg += gap;
-          if (M2_gbTrace == 15)
+          if (gbTrace == 15)
             {
               buffer o;
               o << "    deferring to degree " << p->deg;
@@ -1174,7 +1174,7 @@ bool gbB::reduceit(spair *p)
           return false;
         }
     }
-  if (M2_gbTrace >= 4 && M2_gbTrace != 15)
+  if (gbTrace >= 4 && gbTrace != 15)
     {
       buffer o;
       o << "." << count;
@@ -1215,7 +1215,7 @@ int gbB::find_good_divisor(exponents e, int x, int degf, int &result_gap)
   /* Next search for GB divisors */
   n += lookup->find_divisors(-1, e, x, &divisors);
 
-  if (M2_gbTrace == 15 && n >= 2)
+  if (gbTrace == 15 && n >= 2)
     {
       gbelem *tg = gb[divisors[n - 1]->_val];
       int sz = tg->size;
@@ -1331,7 +1331,7 @@ void gbB::remainder(POLY &f, int degf, bool use_denom, ring_elem &denom)
               F, Fsyz, head.next, h.f, h.fsyz, g.f, g.fsyz, use_denom, denom);
           count++;
           //      stats_ntail++;
-          if (M2_gbTrace >= 10)
+          if (gbTrace >= 10)
             {
               buffer o;
               o << "  tail reducing by ";
@@ -1346,13 +1346,13 @@ void gbB::remainder(POLY &f, int degf, bool use_denom, ring_elem &denom)
   R->gbvector_remove_content(h.f, h.fsyz, use_denom, denom);
   f.f = h.f;
   f.fsyz = h.fsyz;
-  if ((M2_gbTrace & PRINT_SPAIR_TRACKING) != 0)
+  if ((gbTrace & PRINT_SPAIR_TRACKING) != 0)
     {
       buffer o;
       o << "number of reduction steps was " << count;
       emit_line(o.str());
     }
-  else if (M2_gbTrace >= 4 && M2_gbTrace != 15)
+  else if (gbTrace >= 4 && gbTrace != 15)
     {
       buffer o;
       o << "," << count;
@@ -1377,7 +1377,7 @@ void gbB::auto_reduce_by(int id)
       gbelem *g = gb[i];
       if (g->deg < me->deg) return;
       if (g->gap < a) continue;
-      if (M2_gbTrace >= 10)
+      if (gbTrace >= 10)
         {
           buffer o;
           o << "  auto reduce " << i << " by " << id;
@@ -1397,7 +1397,7 @@ void gbB::collect_syzygy(gbvector *f)
   _syz.push_back(f);
   n_syz++;
 
-  if (M2_gbTrace >= 10)
+  if (gbTrace >= 10)
     {
       buffer o;
       o << " new syzygy : ";
@@ -1447,14 +1447,14 @@ void gbB::insert_gb(POLY f, gbelem_type minlevel)
 
   lookup->insert(g->lead, x, me);
 
-  if (M2_gbTrace == 15)
+  if (gbTrace == 15)
     {
       buffer o;
       o << "    new ";
       gbelem_text_out(o, INTSIZE(gb) - 1);
       emit_line(o.str());
     }
-  else if (M2_gbTrace >= 5)
+  else if (gbTrace >= 5)
     {
       char s[100];
       buffer o;
@@ -1483,7 +1483,7 @@ void gbB::insert_gb(POLY f, gbelem_type minlevel)
       // codim test is set.  Compute the codimension now.
     }
 
-  if (M2_gbTrace >= 10)
+  if (gbTrace >= 10)
     {
       //      show();
     }
@@ -1509,7 +1509,7 @@ bool gbB::process_spair(spair *p)
   if (!R->gbvector_is_zero(f.f))
     {
       insert_gb(f, minlevel);
-      if (M2_gbTrace == 3) emit_wrapped("m");
+      if (gbTrace == 3) emit_wrapped("m");
     }
   else
     {
@@ -1518,11 +1518,11 @@ bool gbB::process_spair(spair *p)
         {
           /* This is a syzygy */
           collect_syzygy(f.fsyz);
-          if (M2_gbTrace == 3) emit_wrapped("z");
+          if (gbTrace == 3) emit_wrapped("z");
         }
       else
         {
-          if (M2_gbTrace == 3) emit_wrapped("o");
+          if (gbTrace == 3) emit_wrapped("o");
         }
     }
   return true;
@@ -1566,11 +1566,11 @@ void gbB::do_computation()
       return;
     }
 
-  if (M2_gbTrace == 15)
+  if (gbTrace == 15)
     {
       emit_line("[gb]");
     }
-  else if (M2_gbTrace >= 1)
+  else if (gbTrace >= 1)
     {
       emit_wrapped("[gb]");
     }
@@ -1583,7 +1583,7 @@ void gbB::do_computation()
           set_status(COMP_DONE_DEGREE_LIMIT);
           return;
         }
-      if (M2_gbTrace & PrintingDegree)
+      if (gbTrace & PrintingDegree)
         {
         }
 
@@ -1639,7 +1639,7 @@ void gbB::do_computation()
                       }
                   }
               }
-            if (M2_gbTrace == 15)
+            if (gbTrace == 15)
               {
                 buffer o;
                 o << "DEGREE " << this_degree;
@@ -1649,7 +1649,7 @@ void gbB::do_computation()
                     << hilbert->nRemainingExpected();
                 emit_line(o.str());
               }
-            else if (M2_gbTrace >= 1)
+            else if (gbTrace >= 1)
               {
                 buffer o;
                 o << '{' << this_degree << '}';
@@ -1726,10 +1726,10 @@ void gbB::start_computation()
   nloops = 0;
   nsaved_unneeded = 0;
   do_computation();
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       show_mem_usage();
-      if (M2_gbTrace >= 3)
+      if (gbTrace >= 3)
         {
           buffer o;
           o << "ncalls = " << ncalls;
@@ -1741,7 +1741,7 @@ void gbB::start_computation()
           o << "nsaved = " << nsaved_unneeded;
           emit_line(o.str());
         }
-      if (M2_gbTrace >= 15) show();
+      if (gbTrace >= 15) show();
     }
 }
 
@@ -1873,10 +1873,10 @@ int gbB::complete_thru_degree() const
 
 void gbB::text_out(buffer &o) const
 /* This displays statistical information, and depends on the
-   M2_gbTrace value */
+   gbTrace value */
 {
   o << "# pairs computed = " << n_pairs_computed << newline;
-  if (M2_gbTrace >= 5 && M2_gbTrace % 2 == 1)
+  if (gbTrace >= 5 && gbTrace % 2 == 1)
     for (unsigned int i = 0; i < gb.size(); i++)
       {
         o << i << '\t';

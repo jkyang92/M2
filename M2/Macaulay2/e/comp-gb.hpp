@@ -100,7 +100,7 @@ class GBComputation : public Computation
 
   void text_out(buffer &o) const override;
   // This displays statistical information, and depends on the
-  // M2_gbTrace value.
+  // gbTrace value.
 };
 
 #endif

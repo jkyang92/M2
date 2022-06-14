@@ -225,7 +225,7 @@ void GaussElimComputation::start_computation()
           reduce_list[row] = p->next;
           p->next = NULL;
           reduce(gb_list[row], p);  // replaces p
-          if (M2_gbTrace >= 3)
+          if (gbTrace >= 3)
             {
               if (p->f == NULL)
                 {
@@ -265,7 +265,7 @@ void GaussElimComputation::start_computation()
       if (gb_list[r] == 0) continue;
       reduce(gb_list[r]->f, gb_list[r]->fsyz, true);
     }
-  if (M2_gbTrace >= 10)
+  if (gbTrace >= 10)
     {
       buffer o;
       text_out(o);

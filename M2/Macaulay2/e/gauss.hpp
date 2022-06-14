@@ -97,7 +97,7 @@ class GaussElimComputation : public GBComputation
 
   virtual void text_out(buffer &o) const;
   // This displays statistical information, and depends on the
-  // M2_gbTrace value.
+  // gbTrace value.
 };
 #endif
 

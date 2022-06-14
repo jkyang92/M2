@@ -356,7 +356,7 @@ const Matrix /* or null */ *HermiteComputation::get_initial(int nparts)
 
 void HermiteComputation::text_out(buffer &o) const
 /* This displays statistical information, and depends on the
-   M2_gbTrace value */
+   gbTrace value */
 {
   o << newline;
   for (int i = 0; i < gens->n_rows(); i++)

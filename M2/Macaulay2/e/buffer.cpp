@@ -3,6 +3,8 @@
 #include <cstring>
 #include <cassert>
 
+const char newline[] = "\n";
+
 void buffer::expand(int newcap)
 {
   int n = 2 * _capacity;

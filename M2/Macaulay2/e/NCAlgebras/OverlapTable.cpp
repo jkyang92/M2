@@ -1,12 +1,12 @@
 #include "NCAlgebras/OverlapTable.hpp"
-#include "engine-exports.h"  // for M2_gbTrace
+#include "engine-includes.hpp"  // for gbTrace
 #include <iostream>          // for cout
 
 // will call find to see if degree exists, and if not will call
 // insert.  If degree exists, append overlap to value of degree
 auto OverlapTable::insert(int deg, bool isGenerator, Overlap o) -> void
 {
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     {
       std::cout << "overlapTable: inserting deg="
                 << deg

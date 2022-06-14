@@ -34,13 +34,13 @@ MonomialInfo::MonomialInfo(int nvars0, const MonomialOrdering *mo)
     {
       compare = &MonomialInfo::compare_lex;
 
-      if (M2_gbTrace >= 1) fprintf(stderr, "lex order\n");
+      if (gbTrace >= 1) fprintf(stderr, "lex order\n");
     }
   else if (moIsGRevLex(mo))
     {
       compare = &MonomialInfo::compare_grevlex;
 
-      if (M2_gbTrace >= 1) fprintf(stderr, "grevlex order\n");
+      if (gbTrace >= 1) fprintf(stderr, "grevlex order\n");
     }
   else
     {
@@ -48,7 +48,7 @@ MonomialInfo::MonomialInfo(int nvars0, const MonomialOrdering *mo)
       nweights = weight_vectors->len / nvars;
       compare = &MonomialInfo::compare_weightvector;
 
-      if (M2_gbTrace >= 1) fprintf(stderr, "weight order\n");
+      if (gbTrace >= 1) fprintf(stderr, "weight order\n");
     }
 
   nslots = 2 + nvars + nweights;

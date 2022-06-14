@@ -200,7 +200,7 @@ void ReducedGB_ZZ::remainder(gbvector *&f, bool use_denom, ring_elem &denom)
             break;
           case DIVISOR_MODULE:
             g = polys[w];
-            if (M2_gbTrace >= 4)
+            if (gbTrace >= 4)
               {
                 buffer o;
                 R->gbvector_text_out(o, F, h);

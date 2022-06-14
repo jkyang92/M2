@@ -7,6 +7,16 @@
 
 #include <M2/config.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+  extern int gbTrace;
+  extern int numericalAlgebraicGeometryTrace;
+  extern int numTBBThreads;
+#ifdef __cplusplus
+}
+#endif
+
 #if !defined(SAFEC_EXPORTS)
 #include <engine-exports.h>
 #endif

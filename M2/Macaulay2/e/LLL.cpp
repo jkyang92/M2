@@ -274,11 +274,11 @@ int LLLoperations::doLLL(MutableMatrix *A,
 
   while (k < n && nsteps != 0 && !system_interrupted())
     {
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         {
           o.reset();
           o << ".";
-          if (M2_gbTrace >= 2) o << k;
+          if (gbTrace >= 2) o << k;
           if (nsteps % 20 == 0) o << newline;
           emit(o.str());
         }
@@ -286,7 +286,7 @@ int LLLoperations::doLLL(MutableMatrix *A,
 
       if (k > kmax)
         {
-          if (M2_gbTrace == 1)
+          if (gbTrace == 1)
             {
               o.reset();
               o << "." << k;

@@ -80,7 +80,7 @@ bool ntl_LLL(MutableMatrix *M,
   // value.
   double delta = static_cast<double>(numer) / static_cast<double>(denom);
 
-  if (M2_gbTrace >= 10) printf("LLL: using strategy %d\n", strategy);
+  if (gbTrace >= 10) printf("LLL: using strategy %d\n", strategy);
   NTL::mat_ZZ *A = mutableMatrix_to_NTL_mat_ZZ(M);
   NTL::mat_ZZ *V = (U ? mutableMatrix_to_NTL_mat_ZZ(U) : 0);
 

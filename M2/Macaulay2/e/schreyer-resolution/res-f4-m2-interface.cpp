@@ -755,7 +755,7 @@ int SchreyerFrame::rankUsingSparseMatrix(Gen& D)
 
   timeComputeSparseRanks += nsecs;
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       if (M->n_rows() > 0 and M->n_cols() > 0)
         std::cout << "  sparse rank = " << rk
@@ -788,7 +788,7 @@ int SchreyerFrame::rankUsingDenseMatrix(Gen& D, bool transposed)
 
   timeComputeRanks += nsecs;
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       if (M.numRows() > 0 and M.numColumns() > 0)
         std::cout << "   dense rank = " << rk
@@ -821,7 +821,7 @@ int SchreyerFrame::rankUsingDenseMatrixFlint(Gen& D, bool transposed)
 
   timeComputeRanks += nsecs;
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       if (M.numRows() > 0 and M.numColumns() > 0)
         std::cout << "   dense rank = " << rk
@@ -841,7 +841,7 @@ int SchreyerFrame::rank(int slanted_degree, int lev)
   double nelementsD = static_cast<double>(nelements);
   double frac_nonzero = (nelements > 0 ? nnonzeroD/nelementsD : 1.0);
 
-  if (M2_gbTrace >= 2 and nelements > 0)
+  if (gbTrace >= 2 and nelements > 0)
     {
       std::cout << "rank(" << slanted_degree << "," << lev << ") size = "
                 << D.numRows() << " x " << D.numColumns()

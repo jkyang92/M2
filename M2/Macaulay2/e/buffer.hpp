@@ -10,6 +10,8 @@
 
 const int BUFFER_INITIAL_CAPACITY = 100;
 
+extern const char newline[];
+
 struct indent
 {
   int n;

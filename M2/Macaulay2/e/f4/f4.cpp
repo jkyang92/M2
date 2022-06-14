@@ -71,7 +71,7 @@ F4GB::F4GB(const VectorArithmetic* VA,
   mat = new coefficient_matrix;
 
   // TODO: set status?
-  if (M2_gbTrace >= 2) M->show();
+  if (gbTrace >= 2) M->show();
 }
 
 void F4GB::set_hilbert_function(const RingElement *hf)
@@ -299,15 +299,15 @@ void F4GB::reorder_columns()
       column_order[i] = i;
     }
 
-  if (M2_gbTrace >= 2) fprintf(stderr, "ncomparisons = ");
+  if (gbTrace >= 2) fprintf(stderr, "ncomparisons = ");
 
   std::stable_sort(column_order, column_order + ncols, C);
 
   clock_t end_time0 = clock();
-  if (M2_gbTrace >= 2) fprintf(stderr, "%ld, ", C.ncomparisons0());
+  if (gbTrace >= 2) fprintf(stderr, "%ld, ", C.ncomparisons0());
   double nsecs0 = (double)(end_time0 - begin_time0) / CLOCKS_PER_SEC;
   clock_sort_columns += nsecs0;
-  if (M2_gbTrace >= 2) fprintf(stderr, " time = %f\n", nsecs0);
+  if (gbTrace >= 2) fprintf(stderr, " time = %f\n", nsecs0);
 
   ////////////////////////////
 
@@ -403,7 +403,7 @@ void F4GB::clear_matrix()
   mat->columns.clear();
   H.reset();
   B.reset();
-  if (M2_gbTrace >= 4)
+  if (gbTrace >= 4)
     {
       Mem->components.show();
       Mem->coefficients.show();
@@ -429,7 +429,7 @@ void F4GB::make_matrix()
     process_column(next_col_to_process++);
 
   // DEBUGGING:
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       fprintf(stderr,
               "--matrix--%ld by %ld\n",
@@ -556,7 +556,7 @@ void F4GB::gauss_reduce(bool diagonalize)
     }
   mVectorArithmetic->deallocateElementArray(gauss_row);
 
-  if (M2_gbTrace >= 3)
+  if (gbTrace >= 3)
     fprintf(stderr, "-- #zeroreductions %d\n", n_zero_reductions);
 
   if (diagonalize) tail_reduce();
@@ -736,7 +736,7 @@ void F4GB::do_spairs()
 {
   if (hilbert && hilbert->nRemainingExpected() == 0)
     {
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         fprintf(stderr,
                 "-- skipping degree...no elements expected in this degree\n");
       return;
@@ -747,7 +747,7 @@ void F4GB::do_spairs()
   n_lcmdups = 0;
   make_matrix();
 
-  if (M2_gbTrace >= 5)
+  if (gbTrace >= 5)
     {
       fprintf(stderr, "---------\n");
       show_matrix();
@@ -758,9 +758,9 @@ void F4GB::do_spairs()
   clock_make_matrix += end_time - begin_time;
   double nsecs = static_cast<double>(end_time - begin_time);
   nsecs /= CLOCKS_PER_SEC;
-  if (M2_gbTrace >= 2) fprintf(stderr, " make matrix time = %f\n", nsecs);
+  if (gbTrace >= 2) fprintf(stderr, " make matrix time = %f\n", nsecs);
 
-  if (M2_gbTrace >= 2) H.dump();
+  if (gbTrace >= 2) H.dump();
 
   begin_time = clock();
   gauss_reduce(true);
@@ -773,12 +773,12 @@ void F4GB::do_spairs()
 
   nsecs = static_cast<double>(end_time - begin_time);
   nsecs /= CLOCKS_PER_SEC;
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       fprintf(stderr, " gauss time          = %f\n", nsecs);
 
       fprintf(stderr, " lcm dups            = %ld\n", n_lcmdups);
-      if (M2_gbTrace >= 5)
+      if (gbTrace >= 5)
         {
           fprintf(stderr, "---------\n");
           show_matrix();
@@ -787,10 +787,10 @@ void F4GB::do_spairs()
     }
   new_GB_elements();
   int ngb = INTSIZE(gb);
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       fprintf(stderr, " # GB elements   = %d\n", ngb);
-      if (M2_gbTrace >= 5) show_gb_array(gb);
+      if (gbTrace >= 5) show_gb_array(gb);
     }
 
   clear_matrix();
@@ -881,7 +881,7 @@ enum ComputationStatusCode F4GB::start_computation(StopConditions &stop_)
             }
         }
 
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         {
           if (hilbert)
             fprintf(stderr,
@@ -896,7 +896,7 @@ enum ComputationStatusCode F4GB::start_computation(StopConditions &stop_)
       complete_thru_this_degree = this_degree;
     }
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       // fprintf(stderr,
       //         "number of calls to cancel row       : %ld\n",

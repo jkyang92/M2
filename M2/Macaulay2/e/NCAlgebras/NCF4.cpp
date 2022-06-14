@@ -6,7 +6,7 @@
 #include "VectorArithmetic.hpp"             // for VectorArithmetic
 #include "NCAlgebras/WordTable.hpp"         // for Overlap, WordTable
 #include "buffer.hpp"                       // for buffer
-#include "engine-exports.h"                 // for M2_gbTrace
+#include "engine-includes.hpp"              // for gbTrace
 #include "ring.hpp"                         // for Ring
 #include "ringelem.hpp"                     // for ring_elem
 #include "../system/supervisorinterface.h"  // for getAllowableThreads
@@ -36,7 +36,7 @@ NCF4::NCF4(const FreeAlgebra& A,
       mScheduler(mNumThreads)
 {
   //  std::cout << "number of processors being used: " << mNumThreads << std::endl;
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       buffer o;
       o << "[NCGB F4]";
@@ -54,7 +54,7 @@ NCF4::NCF4(const FreeAlgebra& A,
                            true,
                            std::make_tuple(i,-1,-1,true));
     }
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     {
       buffer o;
       o << (mIsGraded ? " homogeneous " : " inhomogeneous ");
@@ -68,7 +68,7 @@ void NCF4::compute(int softDegreeLimit)
     {
       auto degSet = mOverlapTable.nextDegreeOverlaps();
       auto toBeProcessed = degSet.second;
-      if (M2_gbTrace >= 1)
+      if (gbTrace >= 1)
         {
           buffer o;
           o << "{" << degSet.first << "}(" << toBeProcessed->size() << ")";
@@ -86,8 +86,8 @@ void NCF4::compute(int softDegreeLimit)
 
 void NCF4::process(const std::deque<Overlap>& overlapsToProcess)
 {
-#if 0  
-  if (M2_gbTrace >= 2)
+#if 0
+  if (gbTrace >= 2)
     {
       buffer o;
       o << newline << "F4 processing: # overlaps (spairs): " << overlapsToProcess.size() << newline;
@@ -102,10 +102,10 @@ void NCF4::process(const std::deque<Overlap>& overlapsToProcess)
   // else
     buildF4Matrix(overlapsToProcess);
   mtbb::tick_count t1 = mtbb::tick_count::now();
-  if (M2_gbTrace >= 2) 
+  if (gbTrace >= 2)
     std::cout << "Time spent on build step: " << (t1-t0).seconds() << std::endl;
     
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       std::cout << "NC F4 GB: matrix size: ";
       displayF4MatrixSize(std::cout);
@@ -114,8 +114,8 @@ void NCF4::process(const std::deque<Overlap>& overlapsToProcess)
   // sort the columns so that the matrix is `upper triangular'
   labelAndSortF4Matrix();
 
-  if (M2_gbTrace >= 100) displayFullF4Matrix(std::cout);
-  else if (M2_gbTrace >= 50) displayF4Matrix(std::cout);
+  if (gbTrace >= 100) displayFullF4Matrix(std::cout);
+  else if (gbTrace >= 50) displayF4Matrix(std::cout);
 
   // reduce the matrix
   t0 = mtbb::tick_count::now();
@@ -124,11 +124,11 @@ void NCF4::process(const std::deque<Overlap>& overlapsToProcess)
   else
     reduceF4Matrix();
   t1 = mtbb::tick_count::now();
-  if (M2_gbTrace >= 2) 
+  if (gbTrace >= 2)
     std::cout << "Time spent on reduction step: " << (t1-t0).seconds() << std::endl;
 
-  if (M2_gbTrace >= 100) displayFullF4Matrix(std::cout);
-  else if (M2_gbTrace >= 50) displayF4Matrix(std::cout);
+  if (gbTrace >= 100) displayFullF4Matrix(std::cout);
+  else if (gbTrace >= 50) displayF4Matrix(std::cout);
 
   // convert back to GB elements...
   PolyList newElems = newGBelements();
@@ -143,7 +143,7 @@ void NCF4::process(const std::deque<Overlap>& overlapsToProcess)
   processPreviousF4Matrix();
   
 #if 0
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       buffer o;
       o << "F4 processing: # GB added: " << newElems.size() << newline;
@@ -236,7 +236,7 @@ auto NCF4::insertNewOverlaps(std::vector<Overlap>& newOverlaps) -> void
    {
      if (std::get<1>(newOverlap) != -1 && !isOverlapNecessary(newOverlap))
        {
-         if (M2_gbTrace >= 3)
+         if (gbTrace >= 3)
            std::cout << "Reduction avoided using eager 2nd criterion." << std::endl;
          continue;
        }
@@ -286,8 +286,8 @@ auto NCF4::checkOldOverlaps(Word& newLeadWord) -> void
       {
         if (j != 0 or j != w.size() - newLeadWord.size())
         {
-          if (M2_gbTrace >= 3)
-             std::cout << "Reduction avoided using lazy 2nd criterion." << std::endl;        
+          if (gbTrace >= 3)
+             std::cout << "Reduction avoided using lazy 2nd criterion." << std::endl;
           std::get<3>(o) = false;
           break;
         }
@@ -590,7 +590,7 @@ void NCF4::processPreRow(PreRow r,
   Word right = r.right;
   PreRowType preRowType = r.preRowType;
   
-  if (M2_gbTrace >= 100) 
+  if (gbTrace >= 100)
     std::cout << "Processing PreRow: ("
               << left << "," << gbIndex << "," << right << ")"
               << std::endl;
@@ -998,7 +998,7 @@ void NCF4::parallelReduceF4Matrix()
   for (auto tlStats : threadLocalStats)
   {
     ++numThreads;
-    if (M2_gbTrace >= 2)
+    if (gbTrace >= 2)
       {
         std::cout << "numCancellations for this thread: " << tlStats.numCancellations << std::endl;
         std::cout << "numRows for this thread: " << tlStats.numRows << std::endl;
@@ -1027,7 +1027,7 @@ void NCF4::parallelReduceF4Matrix()
     mVectorArithmetic->deallocateElementArray(tlDense);
 
   mVectorArithmetic->deallocateElementArray(denseVector);
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     {
       std::cout << "Number of cancellations: " << ncF4Stats.numCancellations << std::endl;
       std::cout << "Number of threads used: " << numThreads << std::endl;

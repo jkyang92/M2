@@ -326,10 +326,10 @@ void F4Res::reorderColumns()
   mFrame.timeSortMatrix += nsec_sort2;
   auto ncompares = sorter.numComparisons();
   
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     std::cout << "  #comparisons sorting " << ncols << " columns = " << ncompares << " ";
   
-  if (M2_gbTrace >= 1)
+  if (gbTrace >= 1)
     std::cout << " sort time: " << nsec_sort2 << std::endl;
 
   timeA = timer();
@@ -423,7 +423,7 @@ void F4Res::makeMatrix()
           r++;
           row.mLeadTerm = it->mMonom;
           loadRow(row);
-          if (M2_gbTrace >= 4)
+          if (gbTrace >= 4)
             if (r % 5000 == 0)
               std::cout << "makeMatrix  sp: " << r
                         << " #rows = " << mColumns.size() << std::endl;
@@ -441,7 +441,7 @@ void F4Res::makeMatrix()
       loadRow(thisrow);
       std::swap(mReducers[mNextReducerToProcess], thisrow);
       mNextReducerToProcess++;
-      if (M2_gbTrace >= 4)
+      if (gbTrace >= 4)
         if (mNextReducerToProcess % 5000 == 0)
           std::cout << "makeMatrix red: " << mNextReducerToProcess
                     << " #rows = " << mReducers.size() << std::endl;
@@ -613,9 +613,9 @@ void F4Res::construct(int lev, int degree)
   timeB = timer();
   mFrame.timeMakeMatrix += seconds(timeB - timeA);
 
-  if (M2_gbTrace >= 2) mHashTable.dump();
+  if (gbTrace >= 2) mHashTable.dump();
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     std::cout << "  make matrix time: " << seconds(timeB - timeA) << " sec"
               << std::endl;
 
@@ -639,20 +639,20 @@ void F4Res::construct(int lev, int degree)
   debugOutputMatrixSparse(mSPairs);
 #endif
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     std::cout << "  (degree,level)=(" << (mThisDegree - mThisLevel) << ","
               << mThisLevel << ") #spairs=" << mSPairs.size()
               << " reducer= " << mReducers.size() << " x " << mReducers.size()
               << std::endl;
 
-  if (M2_gbTrace >= 2) std::cout << "  gauss reduce matrix" << std::endl;
+  if (gbTrace >= 2) std::cout << "  gauss reduce matrix" << std::endl;
 
   timeA = timer();
   gaussReduce();
   timeB = timer();
   mFrame.timeGaussMatrix += seconds(timeB - timeA);
 
-  if (M2_gbTrace >= 2)
+  if (gbTrace >= 2)
     std::cout << "    time: " << seconds(timeB - timeA) << " sec" << std::endl;
   //  mFrame.show(-1);
 

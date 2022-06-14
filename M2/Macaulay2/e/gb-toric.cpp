@@ -1111,7 +1111,7 @@ void binomialGB_comp::process_pair(binomial_s_pair s)
             }
         }
 
-      if (M2_gbTrace >= 5)
+      if (gbTrace >= 5)
         {
           buffer o;
           o << "pair [";
@@ -1132,7 +1132,7 @@ void binomialGB_comp::process_pair(binomial_s_pair s)
 
   if (Gmin->reduce(f))
     {
-      if (M2_gbTrace >= 5)
+      if (gbTrace >= 5)
         {
           buffer o;
           o << "  reduced to ";
@@ -1281,7 +1281,7 @@ void binomialGB_comp::stats() const
   o << Gmin->n_masks() << newline;
   emit(o.str());
 
-  if (M2_gbTrace >= 3) Gmin->debug_display();
+  if (gbTrace >= 3) Gmin->debug_display();
 }
 
 // Local Variables:

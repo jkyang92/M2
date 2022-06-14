@@ -76,7 +76,7 @@ class F4Computation : public GBComputation
 
   void text_out(buffer &o) const override;
   /* This displays statistical information, and depends on the
-     M2_gbTrace value */
+     gbTrace value */
 
   int complete_thru_degree() const override;
   // The computation is complete up through this degree.
