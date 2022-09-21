@@ -838,7 +838,7 @@ char const *system_strerror(void) {
 	  errno = 0;
 	  return msg;
      }
-     if (test_Field(THREADLOCAL(interrupts_interruptedFlag,struct atomic_field))) return "interrupted";
+     if (test_Field(interrupts_interruptedFlag)) return "interrupted";
      return "no system error indication found";
 }
 

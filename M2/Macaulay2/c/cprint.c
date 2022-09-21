@@ -67,19 +67,19 @@ char* getsymbolbasicname(node p){
      }
 
 void printsymbol(node p){
-     if(pthreadThreadLocal && !threadLocalDeclarationFlag && p->body.symbol.flags & threadLocal_F)
-	  {
-	    //THIS IS AN INT EXAMPLE
-	    //	    *((int*)TS_Get_Local(M2_gbTrace_id)) = 0;
-    	    put("(*((");
-	    node ltype = type(p);
-	    cprint(ltype);
-	    put("*)");
-	    put("TS_Get_Local(");
-	    printsymbolbasic(p);
-	    put("_id)))");
-	  }
-     else
+     /* if(pthreadThreadLocal && !threadLocalDeclarationFlag && p->body.symbol.flags & threadLocal_F) */
+     /* 	  { */
+     /* 	    //THIS IS AN INT EXAMPLE */
+     /* 	    //	    *((int*)TS_Get_Local(M2_gbTrace_id)) = 0; */
+     /* 	    put("(*(("); */
+     /* 	    node ltype = type(p); */
+     /* 	    cprint(ltype); */
+     /* 	    put("*)"); */
+     /* 	    put("TS_Get_Local("); */
+     /* 	    printsymbolbasic(p); */
+     /* 	    put("_id)))"); */
+     /* 	  } */
+     /* else */
 	  printsymbolbasic(p);
      }
 
@@ -459,12 +459,14 @@ static void cprintdefine(node t,bool definitions) {
 	  }
      if (flags & threadLocal_F)
 	  {
-	       put("int ");
+	    put("thread_local ");
+	    cprint(typ);
+	    put(" ");
 	       threadLocalDeclarationFlag = 1;
 	       cprint(t);
-	       threadLocalDeclarationFlag = 0;	      
-	       put("_id;\n");
-//	       put("__thread ");
+	       threadLocalDeclarationFlag = 0;
+/* 	       //	       put("_id;\n"); */
+/* //	       put("__thread "); */
           }
      if (flags & const_F) put("const ");
      if (isfunctiontype(typ)) {

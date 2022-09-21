@@ -13,8 +13,8 @@ bool noline = FALSE;
 bool nomacros = FALSE;
 bool arraychks = TRUE;
 bool casechks = TRUE;
-bool compilerThreadLocal = FALSE;
-bool pthreadThreadLocal = TRUE;
+bool compilerThreadLocal = TRUE;
+bool pthreadThreadLocal = FALSE;
 
 
 static char Copyright[] = "Copyright 1993, 2010, by Daniel R. Grayson";
@@ -144,6 +144,7 @@ typedef char M2_bool;\n\
 struct tagged_union { unsigned short type_; };\n\
 #undef M2_basic_typedefs_defined\n\
 #endif\n\
+#include <threads.h>\n\
 \n\
 ";
 
@@ -158,6 +159,7 @@ static char declarations_trailer[] = "\
 static char code_header[] = "\
 #include \"scc-core.h\"\n\
 #include \"../system/supervisorinterface.h\"\n\
+#include <threads.h>\n\
 ";
 
 static void readsetup(scope v){

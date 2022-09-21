@@ -44,11 +44,11 @@ extern "C" void interrupts_determineExceptionFlag();
 
 extern int have_arg_no_int;
 
-extern int tokens_stopIfError_id;
+//extern int tokens_stopIfError_id;
 
-bool tokens_stopIfError;
-bool interrupts_interruptPending;
-bool interrupts_interruptShield;
+thread_local bool tokens_stopIfError;
+thread_local bool interrupts_interruptPending;
+thread_local bool interrupts_interruptShield;
 
 /* ######################################################################### */
 
@@ -246,8 +246,8 @@ void segv_handler(int sig) {
 
 void interrupt_handler(int sig) {
   if (tryGlobalInterrupt() == 0) {
-    if (test_Field(THREADLOCAL(interrupts_interruptedFlag, struct atomic_field)) ||
-                   THREADLOCAL(interrupts_interruptPending, bool)) {
+    if (test_Field(interrupts_interruptedFlag) ||
+                   interrupts_interruptPending) {
 
       if (isatty(STDIN) && isatty(STDOUT)) {
 

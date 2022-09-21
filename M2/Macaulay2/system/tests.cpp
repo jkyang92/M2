@@ -57,7 +57,7 @@ static volatile bool started=false;
 static void* TS_Test2_Func1(void* vtup)
 {
   started=true;
-  while(!AO_load(&THREADLOCAL(interrupts_interruptedFlag,struct atomic_field).field))
+  while(!AO_load(&interrupts_interruptedFlag.field))
     {
      sleep(0);
      }

@@ -16,6 +16,9 @@ typedef void* (*ThreadTaskFunctionPtr)(void*);
 #define THREADLOCALINIT(x) x
 #endif
 
+/* Needed for thread_local in C */
+#include <threads.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -64,8 +67,8 @@ extern "C" {
   extern struct ThreadTask* createThreadTask(const char* name, ThreadTaskFunctionPtr func, void* userData, int timeLimitExists, time_t timeLimitSeconds, int isM2Task);
 
   //Private interface functions
-  extern THREADLOCALDECL(struct atomic_field, interrupts_interruptedFlag);
-  extern THREADLOCALDECL(struct atomic_field, interrupts_exceptionFlag);
+  extern thread_local struct atomic_field interrupts_interruptedFlag;
+  extern thread_local struct atomic_field interrupts_exceptionFlag;
   extern struct ThreadSupervisor* threadSupervisor;
   struct parse_ThreadCellBody_struct;
   void createThreadGCMemory();

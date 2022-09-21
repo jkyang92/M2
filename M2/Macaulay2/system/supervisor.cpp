@@ -63,9 +63,9 @@ extern "C" {
       return -1;
     }
   }
-
-  THREADLOCALDECL(struct atomic_field, interrupts_interruptedFlag);
-  THREADLOCALDECL(struct atomic_field, interrupts_exceptionFlag);
+  
+  thread_local struct atomic_field interrupts_interruptedFlag;
+  thread_local struct atomic_field interrupts_exceptionFlag;
   struct ThreadSupervisor* threadSupervisor = 0 ;
   void initializeThreadSupervisor()
   {
@@ -218,12 +218,12 @@ void* ThreadTask::waitOn()
 
 void staticThreadLocalInit()
 {
-  THREADLOCALINIT(interrupts_exceptionFlag);
-  THREADLOCALINIT(interrupts_interruptedFlag);
+  //THREADLOCALINIT(interrupts_exceptionFlag);
+  //THREADLOCALINIT(interrupts_interruptedFlag);
   //Make ABSOLUTELY sure that the exception and interrupt flags are not set.
   //This memory should be initialized to zero, but doesn't seem to be on all systems.
-  AO_store(&THREADLOCAL(interrupts_interruptedFlag,struct atomic_field).field,0);
-  AO_store(&THREADLOCAL(interrupts_exceptionFlag,struct atomic_field).field,0);
+  AO_store(&interrupts_interruptedFlag.field,0);
+  AO_store(&interrupts_exceptionFlag.field,0);
 }
 
 
@@ -420,8 +420,8 @@ void SupervisorThread::threadEntryPoint()
   if(pthread_setspecific(threadSupervisor->m_ThreadSpecificKey,m_ThreadLocal))
     abort();
   #endif
-  m_Interrupt=&THREADLOCAL(interrupts_interruptedFlag,struct atomic_field);
-  m_Exception=&THREADLOCAL(interrupts_exceptionFlag,struct atomic_field);
+  m_Interrupt=&interrupts_interruptedFlag;
+m_Exception=&interrupts_exceptionFlag;
   reverse_run(thread_prepare_list);// re-initialize any thread local variables
   while(m_KeepRunning)
     {
