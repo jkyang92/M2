@@ -46,9 +46,14 @@ extern int have_arg_no_int;
 
 //extern int tokens_stopIfError_id;
 
-thread_local bool tokens_stopIfError;
-thread_local bool interrupts_interruptPending;
-thread_local bool interrupts_interruptShield;
+bool tokens_stopIfError_global;
+bool interrupts_interruptPending_global;
+bool interrupts_interruptShield_global;
+
+extern thread_local char tokens_stopIfError;
+extern thread_local char interrupts_interruptPending;
+extern thread_local char interrupts_interruptShield;
+
 
 /* ######################################################################### */
 
@@ -247,7 +252,7 @@ void segv_handler(int sig) {
 void interrupt_handler(int sig) {
   if (tryGlobalInterrupt() == 0) {
     if (test_Field(interrupts_interruptedFlag) ||
-                   interrupts_interruptPending) {
+                   interrupts_interruptPending_global) {
 
       if (isatty(STDIN) && isatty(STDOUT)) {
 
@@ -270,8 +275,8 @@ void interrupt_handler(int sig) {
 	      interrupts_clearAlarmedFlag();
 	      interrupts_clearInterruptFlag();
 
-	      interrupts_interruptPending = FALSE;
-	      interrupts_interruptShield = FALSE;
+	      interrupts_interruptPending_global = FALSE;
+	      interrupts_interruptShield_global = FALSE;
 
 	      interrupts_determineExceptionFlag();
 	      LONGJUMP(abort_jmp.addr);
@@ -300,10 +305,10 @@ void interrupt_handler(int sig) {
 
     } else {
 
-      if (THREADLOCAL(interrupts_interruptShield, bool)) {
-	THREADLOCAL(interrupts_interruptPending, bool) = TRUE;
+      if (interrupts_interruptShield) {
+	interrupts_interruptPending = TRUE;
       } else {
-	if (THREADLOCAL(tokens_stopIfError, bool)) {
+	if (tokens_stopIfError) {
 	  int interruptExit = 2; /* see also interp.d */
 	  fprintf(stderr,"interrupted, stopping\n");
 	  _Exit(interruptExit);
