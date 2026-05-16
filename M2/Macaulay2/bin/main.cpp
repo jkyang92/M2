@@ -57,6 +57,8 @@ void* profFunc(ArgCell* p);
 void* testFunc(ArgCell* p);
 void  M2_flint_abort(void);
 
+extern "C" void rust_startup();
+
 static void * GC_start_performance_measurement_0(void *) {
 #ifdef GC_start_performance_measurement /* added in bdwgc 8 */
   GC_start_performance_measurement();
@@ -186,12 +188,14 @@ void* interpFunc(ArgCell* vargs)
   signal(SIGSEGV, segv_handler);  /* dump the stack trace and exit */
   signal(SIGUSR1, trace_handler); /* log the stack trace to file */
 
+  rust_startup();
+
   /*
     process() in interp.dd is where all the action happens, however, interp__prepare()
     from interp-tmp.cc is called first. This happens even before main() because all
     "_prepare()" functions have "__attribute__ ((constructor))" in their declaration.
   */
-  interp_process();
+  //interp_process();
 
   clean_up();
 

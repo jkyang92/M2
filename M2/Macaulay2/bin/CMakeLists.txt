@@ -54,7 +54,8 @@ target_compile_options(M2-binary PRIVATE
 
 target_link_libraries(M2-binary
   ${Boost_stacktrace_lib}
-  M2-supervisor M2-engine M2-interpreter ${CMAKE_DL_LIBS})
+  M2-supervisor M2-engine M2-interpreter ${CMAKE_DL_LIBS}
+  rust_interp)
 
 #if we have a usable link time stacktrace library, force boost to use it
 if(NOT Boost_stacktrace_header_only)
