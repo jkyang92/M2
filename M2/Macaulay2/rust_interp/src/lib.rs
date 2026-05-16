@@ -2,14 +2,11 @@
 use std::ffi::c_char;
 use std::ffi::CStr;
 use std::io;
-
-unsafe extern "C" {
-    fn interp_process();
-}
+mod m2;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_startup() {
     unsafe {
-        interp_process();
+        m2::interp_process();
     }
 }

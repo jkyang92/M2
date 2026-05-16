@@ -64,7 +64,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Corrosion)
 
 corrosion_import_crate(MANIFEST_PATH rust_interp/Cargo.toml)
-
+add_dependencies(cargo-prebuild_rust_interp M2-interpreter)
+corrosion_set_env_vars(rust_interp "CPATH=$<JOIN:$<TARGET_PROPERTY:M2-interpreter,INTERFACE_INCLUDE_DIRECTORIES>,:>:${CMAKE_BINARY_DIR}/include/:${CMAKE_SOURCE_DIR}/include/")
 ###############################################################################
 # Add source-based code coverage targets
 if(BUILD_COVERAGE)

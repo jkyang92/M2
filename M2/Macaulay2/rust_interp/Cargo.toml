@@ -6,3 +6,6 @@ edition = "2024"
 [lib]
 name = "rust_interp"
 crate-type = ["staticlib"]
+
+[build-dependencies]
+bindgen = "0.72.1"
