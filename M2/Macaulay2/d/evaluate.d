@@ -1664,6 +1664,7 @@ export evalraw(c:Code):Expr := (
 	  is c:newFromCode do NewFromFun(c.newClause,c.fromClause)
 	  is c:newOfFromCode do NewOfFromFun(c.newClause,c.ofClause,c.fromClause)
 	  is nullCode do return nullE
+          is breakpointCode do return nullE
 	  is v:realCode do return Expr(RRcell(v.x))
 	  is v:integerCode do return Expr(ZZcell(v.x))
 	  is v:stringCode do return Expr(stringCell(v.x))

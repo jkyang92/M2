@@ -264,6 +264,12 @@ export functionCode := {+ -- this is called FunctionBody in the top-level
      hash:hash_t,
      position:Position
      };
+
+export breakpointCode := {+
+    code:Code,
+    position:Position
+    };
+
 export Code := (
     -- when adding or removing classes of core here, also update debugging.dd
      nullCode or realCode or stringCode or integerCode 
@@ -277,6 +283,7 @@ export Code := (
      or whileDoCode or whileListCode or whileListDoCode
      or ifCode or tryCode or adjacentCode or functionCode or catchCode
      or Error						    -- for tail recursion
+     or breakpointCode
      );
 export PseudocodeClosure := {+ frame:Frame, code:Code };
 export Pseudocode := {+ code:Code };

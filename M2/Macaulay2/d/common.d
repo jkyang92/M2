@@ -43,6 +43,7 @@ export codePosition(c:Code):Position := ( -- TODO retire
     is f:functionCode              do f.position
     is f:catchCode                 do f.position
     is f:Error                     do f.position
+    is f:breakpointCode            do f.position
     );
 
 export setup(e:SymbolClosure,fn:binop):void := (

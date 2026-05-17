@@ -88,6 +88,7 @@ export tostring(c:Code):string := (
     is x:newFromCode   do concatenate(array(string)("(new ", tostring(x.newClause),                                " from: ", tostring(x.fromClause), ")"))
     is x:newOfCode     do concatenate(array(string)("(new ", tostring(x.newClause), " of: ", tostring(x.ofClause), ")"))
     is x:newCode       do concatenate(array(string)("(new ", tostring(x.newClause), ")"))
+    is x:breakpointCode do "(breakpoint)"
     );
 
 export toExpr(c:Code):Expr := Pseudocode(c);
@@ -429,3 +430,31 @@ export toExpr(e:ParseTree):Expr := (
 	toExpr(n.newParent),
 	toExpr(n.newInitializer))
     is dummy do list(toExpr("dummy")));
+
+
+addBreakpoint(c:Code, lineNumber:ushort):Code := (
+    p := codePosition(c);
+    if p.lineL>=lineNumber then return Code(breakpointCode(c));
+    --TODO walk through the code tree
+    c
+);
+
+insertBreakpoint(args:Expr):Expr := (
+    when args
+    is seq:Sequence do (
+        if length(seq)==2
+        then (
+            when seq.0
+            is p:Pseudocode do (
+                when seq.1
+                is i:ZZcell do (
+                    if isInt(i)
+                    then (
+                        c := addBreakpoint(p.code,ushort(toInt(i)));
+                        Expr(Pseudocode(c)))
+                    else (WrongArgSmallInteger(2)))
+                else WrongArgSmallInteger(2))
+            else WrongArg(1,"psuedocode"))
+        else WrongNumArgs(2))
+    else WrongNumArgs(2));
+setupfun("insertBreakpoint",insertBreakpoint);
