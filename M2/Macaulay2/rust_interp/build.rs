@@ -13,6 +13,8 @@ fn main() {
         // What functions and types to generate bindings for
         .allowlist_function("interp_process")
         .allowlist_type("M2_string")
+        .allowlist_type("stdiop_Position")
+        .allowlist_type("parse_Code")
         // Tell cargo to invalidate the built crate whenever any of the
         // included header files changed.
         .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
