@@ -267,6 +267,7 @@ export {
 	"MapExpression",
 	"Matrix",
 	"MatrixExpression",
+	"MaxEntries",
 	"MaxReductionCount",
 	"MaximalRank",
 	"MethodFunction",
