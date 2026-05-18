@@ -47,7 +47,7 @@ resetProfileTable(e:Expr):Expr := (
     ProfileTable.beingInitialized = false; -- for technical reasons
     setGlobalVariable(profileTableS,Expr(ProfileTable));
     nullE);
-setupfun("resetProfileTable", resetProfileTable);
+setupfun("resetProfileTable", resetProfileTable).Protected = false; -- will be overwritten in m2/profile.m2
 
 -- increments the entry corresponding to key in ProfileTable.
 increment(key:Expr, data:Sequence):Expr := (

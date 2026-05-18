@@ -156,12 +156,14 @@ Node
     coverageSummary
    (coverageSummary, Thing)
    (coverageSummary, String)
+    resetProfileTable
   Headline
     profile a computation
   Usage
     profile f()
-    profileSummary f
-    coverageSummary f
+    profileSummary
+    coverageSummary
+    resetProfileTable()
   Consequences
     Item
       The hash table @TT "ProfileTable"@ is updated with the profiling measurement data.
@@ -182,7 +184,7 @@ Node
     Text
       If desired one can reset the profileSummary table so that multiple bits of code can be profiled separately.
     Example
-      resetProfileTable
+      resetProfileTable()
       profileSummary
     Text
       The user can now profile a different function. For example:
