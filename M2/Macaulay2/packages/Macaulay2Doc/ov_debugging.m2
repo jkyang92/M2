@@ -163,7 +163,6 @@ Node
     profile f()
     profileSummary
     coverageSummary
-    resetProfileTable()
   Consequences
     Item
       The hash table @TT "ProfileTable"@ is updated with the profiling measurement data.
@@ -186,6 +185,9 @@ Node
     Example
       resetProfileTable()
       profileSummary
+     Text
+      One can pass a string to profileSummary to filter runs of certain parts of the code.
+      profileSummary "set"
     Text
       The user can now profile a different function. For example:
     Example
