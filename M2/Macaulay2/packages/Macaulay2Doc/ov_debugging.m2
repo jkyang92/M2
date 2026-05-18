@@ -158,6 +158,7 @@ Node
     profileSummary
    (profileSummary, Thing)
    (profileSummary, String)
+    MaxEntries
     coverageSummary
    (coverageSummary, Thing)
    (coverageSummary, String)
@@ -181,18 +182,20 @@ Node
     Text
       Afterwards, running @TT "profileSummary"@ and @TT "coverageSummary"@ produces
       easy to read tables summarizing the accumulated data so far in different ways.
-      The column "cost" records cpu time as a percentage of ellapsedTime.
+      The column "cost" records @TT "cpuTime"@ as a percentage of @TT "elapsedTime"@ (the actual time required for the computation).
     Example
       profileSummary
       coverageSummary
     Text
-      If desired one can reset the profileSummary table so that multiple bits of code can be profiled separately.
+      If desired one can reset the @TT "profileSummary"@ table so that multiple bits of code can be profiled separately.
     Example
-      resetProfileTable()
+      resetProfileTable
       profileSummary
     Text
-      One can pass a string to profileSummary to filter runs of certain parts of the code.
+      One can pass a string to @TT "profileSummary"@ to filter runs of certain parts of the code.
     Example
+      profile matrix table(4, 5, (i,j) -> i^j)
+      profileSummary
       profileSummary "set"
     Text
       The user can now profile a different function. For example:
@@ -203,6 +206,11 @@ Node
       g = () -> factor f
       profile factor f
       profileSummary
+    Text
+      By default, @TT "profileSummary"@ displays at most 20 rows. The optional argument
+      @TT "MaxEntries"@ can be used to change this limit.
+    Example
+      profileSummary(MaxEntries => 5)
 ///
 
 document {
