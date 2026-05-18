@@ -178,6 +178,11 @@ Node
     Example
       profileSummary
       coverageSummary
+    Text
+      If desired one can reset the profileSummary table so that multiple bits of code can be profiled separately.
+    Example
+      resetProfileTable
+      profileSummary
 ///
 
 document {
