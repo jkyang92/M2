@@ -317,6 +317,7 @@ bumpPrecedence();
      export timingS        := special("timing",        unaryop, precSpace, wide);
      export elapsedTimeS   := special("elapsedTime",   unaryop, precSpace, wide);
      export elapsedTimingS := special("elapsedTiming", unaryop, precSpace, wide);
+     export cpuTimerS      := special("cpuTimer",      unaryop, precSpace, wide);
      export breakpointS    := special("breakpoint",    unaryop, precSpace, wide);
      export profileS       := special("profile",       unaryop, precSpace, wide);
      export shieldS        := special("shield",        unaryop, precSpace, wide);

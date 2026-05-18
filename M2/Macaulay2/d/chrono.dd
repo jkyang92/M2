@@ -36,6 +36,11 @@ export cpuTimer(c:Code):Sequence := (
     T1 := cpuTime();
     Sequence(toExpr(T1 - T0), ret));
 
+cpuTimerfun(c:Code):Expr := (
+    s := cpuTimer(c);
+    when s.1 is Error do s.1 else Expr(s));
+setupop(cpuTimerS, cpuTimerfun);
+
 export wallTimer(c:Code):Sequence := (
     T0 := Ccode(Chrono, "std::chrono::steady_clock::now()");
     -- Note: here we intentionally call evalraw so

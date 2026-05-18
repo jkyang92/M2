@@ -602,6 +602,7 @@ export {
 	"coverMap",
 	"coverageSummary",
 	"cpuTime",
+	"cpuTimer",
 	"createTask",
 	"csc",
 	"csch",
