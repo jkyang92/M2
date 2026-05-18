@@ -190,8 +190,9 @@ Node
     Example
       resetProfileTable()
       profileSummary
-     Text
+    Text
       One can pass a string to profileSummary to filter runs of certain parts of the code.
+    Example
       profileSummary "set"
     Text
       The user can now profile a different function. For example:
