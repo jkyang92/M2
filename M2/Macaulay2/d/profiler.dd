@@ -1,4 +1,4 @@
--- Copyright 2024 by Mahrud Sayrafi
+-- Copyright 2024 by Mahrud Sayrafi (and Luke and Rosie and Jay, but mostly Jay)
 
 use binding;  -- for symbols
 use evaluate; -- for eval
@@ -40,7 +40,14 @@ setupfun("stacktrace", stacktrace).Protected = false; -- will be overloaded in m
 -- TODO: this should be thread local as well
 ProfileTable := newHashTable(Tally, nothingClass);
 ProfileTable.beingInitialized = false; -- mutex locks will occur
-setupconst("ProfileTable", Expr(ProfileTable));
+profileTableS:= setupvar("ProfileTable", Expr(ProfileTable));
+
+resetProfileTable(e:Expr):Expr := (
+    ProfileTable = newHashTable(Tally, nothingClass);
+    ProfileTable.beingInitialized = false; -- for technical reasons
+    setGlobalVariable(profileTableS,Expr(ProfileTable));
+    nullE);
+setupfun("resetProfileTable", resetProfileTable);
 
 -- increments the entry corresponding to key in ProfileTable.
 increment(key:Expr, data:Sequence):Expr := (
@@ -88,6 +95,7 @@ evalprofpointer = evalprof;
 -- briefly enables the profiler and evaluates the code that follows,
 -- updating the resulting statistics in the global ProfileTable.
 profile(c:Code):Expr := (
+    --resetProfileTable(nullE);
     if debugLevel == -2 then printMessage(codePosition(c), "entering profiler");
     profiling = true;
     data := cpuTimer(c); -- calls eval, not evalraw
