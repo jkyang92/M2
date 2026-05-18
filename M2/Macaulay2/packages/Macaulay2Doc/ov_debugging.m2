@@ -175,6 +175,7 @@ Node
     Text
       Afterwards, running @TT "profileSummary"@ and @TT "coverageSummary"@ produces
       easy to read tables summarizing the accumulated data so far in different ways.
+      The column "cost" records cpu time as a percentage of ellapsedTime.
     Example
       profileSummary
       coverageSummary
@@ -182,6 +183,15 @@ Node
       If desired one can reset the profileSummary table so that multiple bits of code can be profiled separately.
     Example
       resetProfileTable
+      profileSummary
+    Text
+      The user can now profile a different function. For example:
+    Example
+      R = ZZ/31[x]
+      f = (x^110+1)*(x^13+1)
+      time factor f
+      g = () -> factor f
+      profile factor f
       profileSummary
 ///
 
