@@ -642,7 +642,7 @@ export applyFCC(fc:FunctionClosure,ec:Code):Expr := (
 		    ret := nullE;
 		    while true do (
 			 localFrame = f;
-	  		 recursionDepth = recursionDepth + 1;	 
+	  		 recursionDepth = recursionDepth + 1;
 			 tailCode := Code(nullCode());
 			 if profiling
 			 then (

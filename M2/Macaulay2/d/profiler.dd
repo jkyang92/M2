@@ -74,7 +74,9 @@ increment(key:Expr, data:Sequence):Expr := (
 -- pushes the code position into the stack, times the evaluation,
 -- increments the stopwatch, pops the stack, and returns the value!
 -- Note: wallTimer calls evalraw, not eval
-measure(c:Code):Expr := stackpop(increment(stackpush(codePosition(c)), wallTimer(c)));
+measure(c:Code,p:Position):Expr := stackpop(increment(stackpush(p), wallTimer(c)));
+measure(c:Code):Expr := measure(c, codePosition(c));
+
 
 -- when profiling = true is set, eval is substituted with evalprof,
 -- so that everytime evalraw recursively calls eval, this one runs.
@@ -96,6 +98,11 @@ export evalprof(c:Code):Expr := (
 	    r = measure(w.i);
 	    i = when r is Error do n else i+1);
 	r)
+    is a:adjacentCode do (
+        when a.lhs 
+        is g:globalMemoryReferenceCode do measure(c, g.position)
+        else evalraw(c)
+    )
     else evalraw(c));
 --    (
 --	stackpush(codePosition(c));
