@@ -643,9 +643,15 @@ export applyFCC(fc:FunctionClosure,ec:Code):Expr := (
 		    ret := nullE;
 		    while true do (
 			 localFrame = f;
-	  		 recursionDepth = recursionDepth + 1;
-			 tailCode := evalAllButTail(model.body);
-	  		 recursionDepth = recursionDepth - 1;
+	  		 recursionDepth = recursionDepth + 1;	 
+			 tailCode := Code(nullCode());
+			 if profiling
+			 then (
+			 	ret = eval(model.body);
+			) else (
+				tailCode = evalAllButTail(model.body);
+			);
+			recursionDepth = recursionDepth - 1;
 			 -- formerly, just ret := eval(model.body); now do tail recursion instead
 			 when tailCode
 			 is e:Error do (
@@ -745,9 +751,12 @@ export applyFCC(fc:FunctionClosure,ec:Code):Expr := (
 				   ret = binarymethod(left,b.rhs,AdjacentS);
 				   break))
 			 else (
-		    	      recursionDepth = recursionDepth + 1;
-			      ret = eval(tailCode);
-		    	      recursionDepth = recursionDepth - 1;
+				if !profiling
+				then (
+					recursionDepth = recursionDepth + 1;
+					ret = eval(tailCode);
+					recursionDepth = recursionDepth - 1;
+				);
 			      break));
 		    localFrame = saveLocalFrame;
 		    if !f.notrecyclable && framesize < length(recycleBin) then (
