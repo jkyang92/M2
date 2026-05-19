@@ -49,16 +49,26 @@ resetProfileTable(e:Expr):Expr := (
     nullE);
 setupfun("resetProfileTable", resetProfileTable).Protected = false; -- will be overwritten in m2/profile.m2
 
+-- appends pair to an existing list-Expr, or starts a new list if existing isn't a list
+appendPair(existing:Expr, pair:Expr):Expr := (
+    when existing is L:List do
+	list(new Sequence len length(L.v) + 1 at i do
+	    provide if i < length(L.v) then L.v.i else pair)
+    else list(pair));
+
 -- increments the entry corresponding to key in ProfileTable.
+-- data is (elapsed, outcome, startWall, endWall); the table stores
+-- (totalElapsed, runCount, listOf{startWall,endWall}) per key.
 increment(key:Expr, data:Sequence):Expr := (
     seconds := data.0;
     outcome := data.1;
+    pair    := list(data.2, data.3);
     -- TODO: optimize the bucket search
     current := lookup(ProfileTable, key);
     storeInHashTable(ProfileTable, key,
 	Expr(when current is s:Sequence
-	    do   Sequence(seconds + s.0, oneE + s.1)
-	    else Sequence(seconds,       oneE)));
+	    do   Sequence(seconds + s.0, oneE + s.1, appendPair(s.2, pair))
+	    else Sequence(seconds,       oneE,       list(pair))));
     outcome);
 
 -- pushes the code position into the stack, times the evaluation,
@@ -98,9 +108,13 @@ profile(c:Code):Expr := (
     --resetProfileTable(nullE);
     if debugLevel == -2 then printMessage(codePosition(c), "entering profiler");
     profiling = true;
+    pt0 := double(Ccode(uint64_t,
+	    "std::chrono::steady_clock::now().time_since_epoch().count()"))/1000000000.;
     data := cpuTimer(c); -- calls eval, not evalraw
+    pt1 := double(Ccode(uint64_t,
+	    "std::chrono::steady_clock::now().time_since_epoch().count()"))/1000000000.;
     profiling = false;
     if debugLevel == -2 then printMessage(codePosition(c), "leaving profiler");
     -- increment the total time in profiler and return the result
-    increment(toExpr("total"), data));
+    increment(toExpr("total"), Sequence(data.0, data.1, toExpr(pt0), toExpr(pt1))));
 setupop(profileS, profile);
