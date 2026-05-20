@@ -1,4 +1,4 @@
--- Copyright 2024 by Mahrud Sayrafi (and Luke and Rosie and Jay, but mostly Jay)
+-- Copyright 2024 by Mahrud Sayrafi (and Luke and Rosie and Jay)
 
 use binding;  -- for symbols
 use evaluate; -- for eval
@@ -50,10 +50,16 @@ resetProfileTable(e:Expr):Expr := (
 setupfun("resetProfileTable", resetProfileTable).Protected = false; -- will be overwritten in m2/profile.m2
 
 -- appends pair to an existing list-Expr, or starts a new list if existing isn't a list
-appendPair(existing:Expr, pair:Expr):Expr := (
-    when existing is L:List do
-	list(new Sequence len length(L.v) + 1 at i do
-	    provide if i < length(L.v) then L.v.i else pair)
+-- does the appending in place, or doubles the length of the list if it is not big enough already
+appendPair(existing:Expr, pair:Expr,place:int):Expr := (
+    when existing is L:List do(
+        if place<length(L.v) then (L.v.place = pair; existing)
+        else list(new Sequence len 2*length(L.v) do (
+        foreach y in L.v do provide y;
+        provide pair;
+        while true do provide nullE;
+        )
+    ))
     else list(pair));
 
 -- increments the entry corresponding to key in ProfileTable.
@@ -67,7 +73,7 @@ increment(key:Expr, data:Sequence):Expr := (
     current := lookup(ProfileTable, key);
     storeInHashTable(ProfileTable, key,
 	Expr(when current is s:Sequence
-	    do   Sequence(seconds + s.0, oneE + s.1, appendPair(s.2, pair))
+	    do   Sequence(seconds + s.0, oneE + s.1, appendPair(s.2, pair, getSmallInt(s.1)))
 	    else Sequence(seconds,       oneE,       list(pair))));
     outcome);
 
