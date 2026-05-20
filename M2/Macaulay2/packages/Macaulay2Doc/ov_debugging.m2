@@ -58,8 +58,8 @@ document {
 	TO "peek",
 	TO "peek'",
 	TO "profile",
-	TO "flameGraph",
-	TO "installFlameGraph",
+	TO flameGraph,
+	TO installFlameGraph,
 	TO "shield",
 	TO "showStructure",
 	TO "showClassStructure",
@@ -166,7 +166,6 @@ Node
    (coverageSummary, Thing)
    (coverageSummary, String)
     resetProfileTable
-    flameGraph
   Headline
     profile a computation
   Usage
@@ -216,15 +215,6 @@ Node
     Example
       profileSummary(MaxEntries => 5)
     Text
-     To get a visual representation of the data from @TT "ProfileTable"@, call @TT "flameGraph"@.
-     There are two options - either use the claude code provided in this .m2 file, or 
-     @TT "installFlameGraph()"@ to install from the flameGraph repo. A flameGraph is a .svg file 
-     that can be viewed in a browser.
-    Example
-      flameGraph
-      installFlameGraph()
-      flameGraph
-    Text
       Passing @TT "ShowStartEnd => true"@ to @TT "profileSummary"@ adds two
       columns reporting each frame's wall-clock start and end relative to the
       start of the profiled run, which is useful for spotting overlapping or
@@ -252,8 +242,8 @@ Node
   Headline
     render a flame chart of profiler data
   Usage
-    flameGraph()
-    flameGraph filename
+    flameGraph
+    flameGraph s
   Description
     Text
       After @TO "profile"@ has populated @TT "ProfileTable"@, @TT "flameGraph"@
