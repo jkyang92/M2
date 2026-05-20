@@ -163,12 +163,14 @@ Node
    (coverageSummary, Thing)
    (coverageSummary, String)
     resetProfileTable
+    flameGraph
   Headline
     profile a computation
   Usage
     profile f()
     profileSummary
     coverageSummary
+    resetProfileTable
   Consequences
     Item
       The hash table @TT "ProfileTable"@ is updated with the profiling measurement data.
@@ -203,7 +205,6 @@ Node
       R = ZZ/31[x]
       f = (x^110+1)*(x^13+1)
       time factor f
-      g = () -> factor f
       profile factor f
       profileSummary
     Text
@@ -211,6 +212,15 @@ Node
       @TT "MaxEntries"@ can be used to change this limit.
     Example
       profileSummary(MaxEntries => 5)
+    Text
+     To get a visual representation of the data from @TT "ProfileTable"@, call @TT "flameGraph"@.
+     There are two options - either use the claude code provided in this .m2 file, or 
+     @TT "installFlameGraph()"@ to install from the flameGraph repo. A flameGraph is a .svg file 
+     that can be viewed in a browser.
+    Example
+      flameGraph
+      installFlameGraph()
+      flameGraph
 ///
 
 document {
