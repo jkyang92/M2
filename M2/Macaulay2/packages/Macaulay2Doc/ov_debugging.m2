@@ -56,6 +56,8 @@ document {
 	TO "peek",
 	TO "peek'",
 	TO "profile",
+	TO "flameGraph",
+	TO "installFlameGraph",
 	TO "shield",
 	TO "showStructure",
 	TO "showClassStructure",
@@ -154,6 +156,7 @@ Node
    (profileSummary, Thing)
    (profileSummary, String)
     MaxEntries
+    ShowStartEnd
     coverageSummary
    (coverageSummary, Thing)
    (coverageSummary, String)
@@ -216,7 +219,99 @@ Node
       flameGraph
       installFlameGraph()
       flameGraph
+    Text
+      Passing @TT "ShowStartEnd => true"@ to @TT "profileSummary"@ adds two
+      columns reporting each frame's wall-clock start and end relative to the
+      start of the profiled run, which is useful for spotting overlapping or
+      serialized work.
+    Text
+      For a graphical view of the same data as a flame chart, see @TO flameGraph@.
+  SeeAlso
+    flameGraph
+    installFlameGraph
 ///
+
+doc ///
+Node
+  Key
+    flameGraph
+   (flameGraph, Thing)
+   (flameGraph, String)
+    Renderer
+    Claude
+    Gregg
+    MaxDepth
+    Width
+    MinWidth
+    OutputFile
+  Headline
+    render a flame chart of profiler data
+  Usage
+    flameGraph()
+    flameGraph filename
+  Description
+    Text
+      After @TO "profile"@ has populated @TT "ProfileTable"@, @TT "flameGraph"@
+      renders the recorded invocations as an SVG flame chart and opens it in
+      the user's default viewer. Each rectangle represents one invocation; its
+      width is proportional to elapsed wall-clock time, its horizontal
+      position to when the invocation began, and its color is keyed off the
+      source location. The path of the SVG file that was written is returned.
+    Text
+      As with @TO profileSummary@, passing a string filter restricts the
+      output to invocations whose recorded location matches that string, so
+      @TT "flameGraph \"myfile.m2\""@ keeps only rows from @TT "myfile.m2"@.
+      Note that filtering before tree-building can flatten the hierarchy when
+      a frame's true parent lives in another file.
+    Text
+      Two renderers are available, selected via the @TT "Renderer"@ option:
+    Text
+      @TT "Renderer => Claude"@ (the default) builds the SVG entirely inside
+      Macaulay2 with no external dependencies. Because the profiler does not
+      record M2 call stacks, this renderer reconstructs the parent/child
+      hierarchy heuristically, by treating each invocation's
+      @TT "[startWall, endWall]"@ interval as a child of the smallest
+      enclosing interval. Clicking a frame in the resulting SVG surfaces its
+      full location and timing in a footer line.
+    Text
+      @TT "Renderer => Gregg"@ emits the data as Chrome Trace Event Format
+      JSON and pipes it through Brendan Gregg's
+      @TT "stackcollapse-chrome-tracing.py"@ and @TT "flamegraph.pl"@ scripts
+      (see @HREF{"https://github.com/brendangregg/FlameGraph"}@). Both scripts
+      must be on @TT "PATH"@ or installed under
+      @TT "applicationDirectory() | \"local/bin/\""@; @TO installFlameGraph@
+      will fetch them automatically.
+    Text
+      Other options:
+    Text
+      @TT "MaxDepth => ZZ"@ (default @TT "infinity"@) caps the stack depth
+      rendered; @TT "Width => ZZ"@ (default 1200) sets the output SVG width in
+      pixels; @TT "MinWidth => RR"@ (default 0.5) omits frames narrower than
+      that many pixels; @TT "OutputFile => String"@ (default @TT "null"@)
+      gives a destination path for the SVG (when omitted, a temporary file is
+      used and removed when M2 exits).
+  SeeAlso
+    "profile"
+    profileSummary
+    installFlameGraph
+///
+
+document {
+    Key => installFlameGraph,
+    Headline => "install Brendan Gregg's FlameGraph scripts",
+    Usage => "installFlameGraph",
+    Consequences => {
+	{"The scripts ", TT "flamegraph.pl", " and ", TT "stackcollapse-chrome-tracing.py",
+	 " are downloaded from ", HREF{"https://github.com/brendangregg/FlameGraph"},
+	 " into ", TT "applicationDirectory() | \"local/bin/\"", ", so that ",
+	 TT "flameGraph(..., Renderer => Gregg)", " can find them without further setup."}
+    },
+    PARA {
+	"The download is attempted with ", TT "curl", " first, then ", TT "wget",
+	", and finally Macaulay2's built-in ", TO getWWW, " as a fallback."
+    },
+    SeeAlso => { flameGraph, "profile" }
+}
 
 document {
      Key => "step",
