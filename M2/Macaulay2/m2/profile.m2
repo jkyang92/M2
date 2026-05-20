@@ -129,14 +129,15 @@ flameGraph String := {
 	| "https://github.com/brendangregg/FlameGraph to be on PATH.\n"
 	| "You can install them automatically by running: installFlameGraph()");
     -- stackcollapse-chrome-tracing.py ships with a #!/usr/bin/python shebang that
-    -- is missing on macOS and many modern Linux distros; fall back to python3.
-    collapseCmd := if onPath "python" then (
-        if stackcollapsePyPath == "stackcollapse-chrome-tracing.py" then "stackcollapse-chrome-tracing.py"
-        else format stackcollapsePyPath
-    ) else if onPath "python3" then (
-        if stackcollapsePyPath == "stackcollapse-chrome-tracing.py" then "python3 \"$(command -v stackcollapse-chrome-tracing.py)\""
-        else "python3 " | format stackcollapsePyPath
-    ) else error "flameGraph requires python or python3 on PATH";
+    -- is missing on macOS and many modern Linux distros; run via python/python3 explicitly.
+    pythonCmd := if onPath "python" then "python"
+	else if onPath "python3" then "python3"
+	else error "flameGraph requires python or python3 on PATH";
+    collapseCmd := if stackcollapsePyPath == "stackcollapse-chrome-tracing.py" then (
+        pythonCmd | " \"$(command -v stackcollapse-chrome-tracing.py)\""
+    ) else (
+        pythonCmd | " " | format stackcollapsePyPath
+    );
     --
     jsonFile := temporaryFileName() | ".json";
     addEndFunction(() -> if fileExists jsonFile then removeFile jsonFile);
@@ -147,7 +148,11 @@ flameGraph String := {
 	addEndFunction(() -> if fileExists t then removeFile t);
 	t) else toString opt.OutputFile;
     --
-    flamegraphPlCmd := if flamegraphPlPath == "flamegraph.pl" then "flamegraph.pl" else format flamegraphPlPath;
+    flamegraphPlCmd := if flamegraphPlPath == "flamegraph.pl" then (
+        "perl \"$(command -v flamegraph.pl)\""
+    ) else (
+        "perl " | format flamegraphPlPath
+    );
     cmd := concatenate(
 	collapseCmd, " ", format jsonFile,
 	" | ", flamegraphPlCmd, " --flamechart --countname ns",
@@ -164,7 +169,7 @@ flameGraph = new Command from flameGraph
 
 -- =====================================================================
 -- installFlameGraph: download and install Brendan Gregg's FlameGraph
--- scripts to ~/.Macaulay2/local/bin/
+-- scripts to applicationDirectory() | "local/bin/"
 -- =====================================================================
 installFlameGraph = Command (() -> (
     localDir := applicationDirectory() | "local/";
