@@ -20,6 +20,8 @@ thread_local std::vector<stdiop0_Position> M2_stack;";
 -- push and pop the given positions in the top-level call stack log
 stackpush(p:Position):Expr := ( Ccode(void, "M2_stack.emplace_back(", p, ")"); locate(p) );
 stackpop(e:Expr):Expr      := ( Ccode(void, "M2_stack.pop_back()"); e );
+-- reports the last item in the stack (a position) as an Expr
+--stackback():Expr      := Expr( Ccode(Position, "M2_stack.back()") );
 
 -- if traceDepth = 0, _prints_ the engine stacktrace using Boost::stacktrace
 -- if traceDepth > 0, returns a sequence of positions from the parsing tree
@@ -118,7 +120,6 @@ evalprofpointer = evalprof;
 -- briefly enables the profiler and evaluates the code that follows,
 -- updating the resulting statistics in the global ProfileTable.
 profile(c:Code):Expr := (
-    --resetProfileTable(nullE);
     if debugLevel == -2 then printMessage(codePosition(c), "entering profiler");
     profiling = true;
     pt0 := double(Ccode(uint64_t,
