@@ -709,6 +709,7 @@ export {
 	"fittingIdeal",
 	"flagLookup",
 	"flameGraph",
+	"installFlameGraph",
 	"flatten",
 	"flattenRing",
 	"flip",

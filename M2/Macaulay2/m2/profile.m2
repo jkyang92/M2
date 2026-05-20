@@ -110,14 +110,33 @@ flameGraph String := {
     if #records == 0 then error "flameGraph: no profile data matching filter";
     --
     onPath := name -> run("command -v " | name | " > /dev/null 2>&1") == 0;
-    if not (onPath "stackcollapse-chrome-tracing.py" and onPath "flamegraph.pl")
+    flamegraphPlPath := if fileExists(applicationDirectory() | "local/bin/flamegraph.pl") then (
+        applicationDirectory() | "local/bin/flamegraph.pl"
+    ) else if onPath "flamegraph.pl" then (
+        "flamegraph.pl"
+    ) else (
+        null
+    );
+    stackcollapsePyPath := if fileExists(applicationDirectory() | "local/bin/stackcollapse-chrome-tracing.py") then (
+        applicationDirectory() | "local/bin/stackcollapse-chrome-tracing.py"
+    ) else if onPath "stackcollapse-chrome-tracing.py" then (
+        "stackcollapse-chrome-tracing.py"
+    ) else (
+        null
+    );
+    if flamegraphPlPath === null or stackcollapsePyPath === null
     then error("flameGraph requires flamegraph.pl and stackcollapse-chrome-tracing.py from "
-	| "https://github.com/brendangregg/FlameGraph to be on PATH");
+	| "https://github.com/brendangregg/FlameGraph to be on PATH.\n"
+	| "You can install them automatically by running: installFlameGraph()");
     -- stackcollapse-chrome-tracing.py ships with a #!/usr/bin/python shebang that
     -- is missing on macOS and many modern Linux distros; fall back to python3.
-    collapseCmd := if onPath "python" then "stackcollapse-chrome-tracing.py"
-	else if onPath "python3"     then "python3 \"$(command -v stackcollapse-chrome-tracing.py)\""
-	else error "flameGraph requires python or python3 on PATH";
+    collapseCmd := if onPath "python" then (
+        if stackcollapsePyPath == "stackcollapse-chrome-tracing.py" then "stackcollapse-chrome-tracing.py"
+        else format stackcollapsePyPath
+    ) else if onPath "python3" then (
+        if stackcollapsePyPath == "stackcollapse-chrome-tracing.py" then "python3 \"$(command -v stackcollapse-chrome-tracing.py)\""
+        else "python3 " | format stackcollapsePyPath
+    ) else error "flameGraph requires python or python3 on PATH";
     --
     jsonFile := temporaryFileName() | ".json";
     addEndFunction(() -> if fileExists jsonFile then removeFile jsonFile);
@@ -128,9 +147,10 @@ flameGraph String := {
 	addEndFunction(() -> if fileExists t then removeFile t);
 	t) else toString opt.OutputFile;
     --
+    flamegraphPlCmd := if flamegraphPlPath == "flamegraph.pl" then "flamegraph.pl" else format flamegraphPlPath;
     cmd := concatenate(
 	collapseCmd, " ", format jsonFile,
-	" | flamegraph.pl --flamechart --countname ns",
+	" | ", flamegraphPlCmd, " --flamechart --countname ns",
 	" --title \"M2 Profile Flame Chart\"",
 	" --width ",    toString opt.Width,
 	" --minwidth ", toString opt.MinWidth,
@@ -141,6 +161,54 @@ flameGraph String := {
     show URL urlEncode(rootURI | realpath svgFile);
     svgFile)
 flameGraph = new Command from flameGraph
+
+-- =====================================================================
+-- installFlameGraph: download and install Brendan Gregg's FlameGraph
+-- scripts to ~/.Macaulay2/local/bin/
+-- =====================================================================
+installFlameGraph = Command (() -> (
+    localDir := applicationDirectory() | "local/";
+    binDir := localDir | "bin/";
+    makeDirectory(localDir);
+    makeDirectory(binDir);
+    
+    flamegraphPl := binDir | "flamegraph.pl";
+    stackcollapsePy := binDir | "stackcollapse-chrome-tracing.py";
+    
+    urls := {
+        ("flamegraph.pl", "https://raw.githubusercontent.com/brendangregg/FlameGraph/master/flamegraph.pl", flamegraphPl),
+        ("stackcollapse-chrome-tracing.py", "https://raw.githubusercontent.com/brendangregg/FlameGraph/master/stackcollapse-chrome-tracing.py", stackcollapsePy)
+    };
+    
+    onPath := name -> run("command -v " | name | " > /dev/null 2>&1") == 0;
+    
+    scan(urls, (name, url, dest) -> (
+        printerr("Downloading " | name | "...");
+        success := false;
+        if onPath "curl" then (
+            success = run("curl -s -L -o " | format dest | " " | format url) == 0;
+        ) else if onPath "wget" then (
+            success = run("wget -q -O " | format dest | " " | format url) == 0;
+        );
+        if not success then (
+            -- fallback to Macaulay2's own http implementation
+            try (
+                response := getWWW url;
+                body := (splitWWW response)#1;
+                dest << body << close;
+                success = true;
+            ) catch (
+                -- ignore
+            );
+        );
+        if success then (
+            run("chmod +x " | format dest);
+            printerr("Successfully installed " | name | " to " | dest);
+        ) else (
+            error("Failed to download " | name | ". Please download it manually from " | url | " and place it in your PATH or " | dest);
+        );
+    ));
+))
 
 -- prints a list of lines which have been seen by the profiler so far
 -- TODO: also highlight missing lines or sections within a line
