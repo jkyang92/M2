@@ -152,6 +152,7 @@ doc ///
 Node
   Key
    "profile"
+   "profileDepth"
     profileSummary
    (profileSummary, Thing)
    (profileSummary, String)
