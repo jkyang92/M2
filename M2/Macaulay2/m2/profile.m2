@@ -7,9 +7,9 @@
 
 needs "methods.m2"
 
-head := () -> ("#run", "cost", "position")
-form := (ttime, t, n, pairs, loc) -> (n,
-    format(4,2,2,2,"e", 100 * t / ttime), loc)
+head := () -> ("#run", "cost", "code", "position")
+form := (ttime, t, n, pairs, key) -> splice(n,
+    format(4,2,2,2,"e", 100 * t / ttime), key#0)
 tail := (ttime, tticks) -> (
     tticks, format(4,4,4,4,"e",ttime) | "s", "elapsed total")
 
