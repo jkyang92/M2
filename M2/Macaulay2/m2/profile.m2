@@ -279,6 +279,8 @@ flameGraph String := {
     MinWidth   => 0.5,
     OutputFile => null
     } >> opt -> filename -> (
+    printerr("warning: Computation based on start and end time of each task; "
+	| "need not be correct when thread number >1; use with caution");
     -- Filtering before tree-building can flatten the hierarchy if a frame's
     -- true parent lives in another file; matches profileSummary's semantics.
     records := flatten apply(pairs ProfileTable, (k, v) ->
