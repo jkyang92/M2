@@ -181,21 +181,45 @@ Node
     Text
       Afterwards, running @TT "profileSummary"@ and @TT "coverageSummary"@ produces
       easy to read tables summarizing the accumulated data so far in different ways.
-      The column "cost" records @TT "cpuTime"@ as a percentage of @TT "elapsedTime"@ (the actual time required for the computation).
+      The "#run" column counts how many times the profiler entered that source location,
+      and the "position" column records the location itself; the "cost" column reports
+      how much of the profiled run's CPU time was spent there, computed as
+    Text
+      @TT "cost = 100 * (wall time accumulated at that location) / (CPU time of the whole profiled expression)"@.
+    Text
+      A few timing terms appear here and in related documentation; the distinction matters
+      because the per-entry numerator and the total-row denominator above are not measured
+      the same way:
+    Code
+      UL {
+          LI { BOLD "Wall time (a.k.a. elapsed time)",
+              " — clock-on-the-wall time, what a stopwatch held next to the computer would show. ",
+              "Precisely: the difference between two readings of a monotonic real-time clock (",
+              TT "std::chrono::steady_clock", "), measured in seconds. This is what ",
+              TO "elapsedTime", " and ", TO "elapsedTiming",
+              " report, and what the profiler records for every individual entry via ",
+              TT "wallTimer", "." },
+          LI { BOLD "CPU time",
+              " — how busy the processor was on this process, summed across cores. ",
+              "Precisely: total user + system processor time charged to the Macaulay2 process ",
+              "by the operating system, in seconds, as reported by ", TO "cpuTime", ". ",
+              "A multi-threaded computation can accumulate CPU time faster than wall-clock ",
+              "time advances; a computation that mostly waits on I/O or sleeps accumulates ",
+              "very little CPU time even while wall time keeps ticking. ",
+              TT "profileSummary", "'s \"elapsed total\" row reports the CPU time consumed ",
+              "by the whole ", TT "profile <expr>", " call." }
+      }
+    Text
+      Because of this mismatch, individual "cost" percentages can exceed 100% (e.g. when
+      an entry waits on I/O so its wall time outruns the total CPU time) and they need
+      not sum to 100% across rows.
     Example
       profileSummary
-      coverageSummary
     Text
       If desired one can reset the @TT "profileSummary"@ table so that multiple bits of code can be profiled separately.
     Example
       resetProfileTable
       profileSummary
-    Text
-      One can pass a string to @TT "profileSummary"@ to filter runs of certain parts of the code.
-    Example
-      profile matrix table(4, 5, (i,j) -> i^j)
-      profileSummary
-      profileSummary "set"
     Text
       The user can now profile a different function. For example:
     Example
@@ -204,6 +228,12 @@ Node
       time factor f
       profile factor f
       profileSummary
+    Text
+      One can pass a string to @TT "profileSummary"@ to filter runs of certain parts of the code.
+    Example
+      profile matrix table(4, 5, (i,j) -> i^j)
+      profileSummary
+      profileSummary "set"    
     Text
       By default, @TT "profileSummary"@ displays at most 20 rows. The optional argument
       @TT "MaxEntries"@ can be used to change this limit.
@@ -216,6 +246,12 @@ Node
       serialized work.
     Text
       For a graphical view of the same data as a flame chart, see @TO flameGraph@.
+    Text
+      Finally, @TT "coverageSummary"@ reports which source locations the profiler
+      observed at least once during the profiled run. The output is not very
+      informative yet and is expected to be improved in the future.
+    Example
+      coverageSummary
   SeeAlso
     flameGraph
     installFlameGraph
