@@ -269,8 +269,6 @@ Node
    (flameGraph, Thing)
    (flameGraph, String)
     Renderer
-    Claude
-    Gregg
     MaxDepth
     Width
     MinWidth
@@ -297,7 +295,7 @@ Node
     Text
       Two renderers are available, selected via the @TT "Renderer"@ option:
     Text
-      @TT "Renderer => Claude"@ (the default) builds the SVG entirely inside
+      @TT "Renderer => \"Claude\""@ (the default) builds the SVG entirely inside
       Macaulay2 with no external dependencies. Because the profiler does not
       record M2 call stacks, this renderer reconstructs the parent/child
       hierarchy heuristically, by treating each invocation's
@@ -305,7 +303,7 @@ Node
       enclosing interval. Clicking a frame in the resulting SVG surfaces its
       full location and timing in a footer line.
     Text
-      @TT "Renderer => Gregg"@ emits the data as Chrome Trace Event Format
+      @TT "Renderer => \"Gregg\""@ emits the data as Chrome Trace Event Format
       JSON and pipes it through Brendan Gregg's
       @TT "stackcollapse-chrome-tracing.py"@ and @TT "flamegraph.pl"@ scripts
       (see @HREF{"https://github.com/brendangregg/FlameGraph"}@). Both scripts
@@ -335,7 +333,7 @@ document {
 	{"The scripts ", TT "flamegraph.pl", " and ", TT "stackcollapse-chrome-tracing.py",
 	 " are downloaded from ", HREF{"https://github.com/brendangregg/FlameGraph"},
 	 " into ", TT "applicationDirectory() | \"local/bin/\"", ", so that ",
-	 TT "flameGraph(..., Renderer => Gregg)", " can find them without further setup."}
+	 TT "flameGraph(..., Renderer => \"Gregg\")", " can find them without further setup."}
     },
     PARA {
 	"The download is attempted with ", TT "curl", " first, then ", TT "wget",

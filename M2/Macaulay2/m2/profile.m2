@@ -17,6 +17,7 @@ tail := (ttime, tticks) -> (
 -- enabled by the ShowStartEnd option of profileSummary
 headSE := () -> ("#run", "cost", "start", "end", "position")
 formSE := (ttime, tstart, t, n, pairs, loc) -> (
+    pairs = take(pairs, n);
     fmtTime := s -> format(4,3,3,3,"e", s - tstart) | "s";
     starts := apply(pairs, first);
     ends   := apply(pairs, last);
@@ -44,6 +45,7 @@ profileSummary String := {MaxEntries => 20, ShowStartEnd => false} >> opt -> fil
 	if showSE then headSE() else head(),
 	if showSE then tailSE(0,0,0,0) else tail(0,0)};
     (ttime, tticks, totPairs) := ProfileTable#"total";
+    totPairs = take(totPairs, tticks);
     tstart := min apply(totPairs, first);
     tend   := max apply(totPairs, last);
     data := sort pairs hashTable(join, apply(dataset,
@@ -63,13 +65,13 @@ resetProfileTable = new Command from resetProfileTable
 -- =====================================================================
 -- flameGraph: render an SVG flame chart from ProfileTable data.
 -- Two renderers are available, selected via the Renderer option:
---   Renderer => Claude (default): a self-contained SVG produced inside
+--   Renderer => "Claude" (default): a self-contained SVG produced inside
 --     M2; no external dependencies. Parent/child hierarchy is
 --     reconstructed by interval containment of each invocation's
 --     [startWall, endWall] pair (the profiler does not record M2 call
 --     stacks; M2_stack in d/profiler.dd is C++-only).
 --     Acknowledgement: Written by Claude Code.
---   Renderer => Gregg: pipes Chrome Trace Event Format JSON through
+--   Renderer => "Gregg": pipes Chrome Trace Event Format JSON through
 --     stackcollapse-chrome-tracing.py and flamegraph.pl --flamechart
 --     from Brendan Gregg's FlameGraph tools
 --     (https://github.com/brendangregg/FlameGraph). Requires
@@ -263,7 +265,7 @@ renderByGregg := (records, svgFile, opt) -> (
 
 flameGraph = method(Dispatch => Thing, Options => true)
 flameGraph Thing := {
-    Renderer   => Claude,
+    Renderer   => "Claude",
     MaxDepth   => infinity,
     Width      => 1200,
     MinWidth   => 0.5,
@@ -271,7 +273,7 @@ flameGraph Thing := {
     } >> opt -> x ->
     flameGraph(if x === () then "" else first locate x, opt)
 flameGraph String := {
-    Renderer   => Claude,
+    Renderer   => "Claude",
     MaxDepth   => infinity,
     Width      => 1200,
     MinWidth   => 0.5,
@@ -283,7 +285,7 @@ flameGraph String := {
 	if k === "total" or not match(filename, toString k) then {}
 	else (
 	    loc := toString k;
-	    apply(v#2, p -> {loc, first p, last p})));
+	    apply(take(v#2, v#1), p -> {loc, first p, last p})));
     if #records == 0 then error "flameGraph: no profile data matching filter";
     --
     svgFile := if opt.OutputFile === null then (
@@ -291,14 +293,14 @@ flameGraph String := {
 	addEndFunction(() -> if fileExists t then removeFile t);
 	t) else toString opt.OutputFile;
     --
-    if opt.Renderer === Claude then (
-	totPairs := if ProfileTable#?"total" then (ProfileTable#"total")#2 else {};
+    if opt.Renderer === "Claude" then (
+	totPairs := if ProfileTable#?"total" then take((ProfileTable#"total")#2, (ProfileTable#"total")#1) else {};
 	tstart := if #totPairs > 0 then min apply(totPairs, first) else 0.;
 	tend   := if #totPairs > 0 then max apply(totPairs, last)  else 0.;
 	svgFile << renderByClaude(records, tstart, tend, opt) << close;
-	) else if opt.Renderer === Gregg then (
+	) else if opt.Renderer === "Gregg" then (
 	renderByGregg(records, svgFile, opt);
-	) else error("flameGraph: unknown Renderer (use Claude or Gregg)");
+	) else error("flameGraph: unknown Renderer (use \"Claude\" or \"Gregg\")");
     --
     show URL urlEncode(rootURI | realpath svgFile);
     svgFile)
