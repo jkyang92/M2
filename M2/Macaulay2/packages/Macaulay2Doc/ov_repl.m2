@@ -440,6 +440,12 @@ document {
      }
 
 document {
+    Key => "guard",
+    Headline => "guard a piece of internal code from the debugger and profiler",
+    TT "guard x", " -- prevent the debugger and profiler from interacting with the code."
+    }
+
+document {
      Key => symbol lineNumber,
      Headline => "current line number",
      TT "lineNumber", " -- the current line number.",

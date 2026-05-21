@@ -135,3 +135,10 @@ profile(c:Code):Expr := (
     -- increment the total time in profiler and return the result
     increment(toExpr("total"), Sequence(data.0, data.1, toExpr(pt0), toExpr(pt1))));
 setupop(profileS, profile);
+
+-- blocks the profiler and debugger
+guard(c:Code):Expr := (
+    pos := codePosition(c);
+    pos.loadDepth = ushort(0);
+    eval(c));
+setupop(guardS, guard);

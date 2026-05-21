@@ -59,6 +59,7 @@ document {
 	TO flameGraph,
 	TO installFlameGraph,
 	TO "shield",
+	TO "guard",
 	TO "showStructure",
 	TO "showClassStructure",
 	TO "showUserStructure",
