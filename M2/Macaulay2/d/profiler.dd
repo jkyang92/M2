@@ -18,7 +18,7 @@ thread_local std::vector<stdiop0_Position> M2_stack;";
 
 -- TODO: implement better std::vector utilities
 -- push and pop the given positions in the top-level call stack log
-stackpush(p:Position, s:Symbol):Expr := ( Ccode(void, "M2_stack.emplace_back(", p, ")"); getGlobalVariable(s) );
+stackpush(p:Position, key:Expr):Expr := ( Ccode(void, "M2_stack.emplace_back(", p, ")"); key );
 stackpush(p:Position):Expr           := ( Ccode(void, "M2_stack.emplace_back(", p, ")"); locate(p) );
 stackpop(e:Expr):Expr                := ( Ccode(void, "M2_stack.pop_back()"); e );
 -- reports the last item in the stack (a position) as an Expr
@@ -83,8 +83,10 @@ increment(key:Expr, data:Sequence):Expr := (
 -- pushes the code position into the stack, times the evaluation,
 -- increments the stopwatch, pops the stack, and returns the value!
 -- Note: wallTimer calls evalraw, not eval
-measure(c:Code):Expr           := stackpop(increment(stackpush(codePosition(c)),    wallTimer(c)));
-measure(c:Code, s:Symbol):Expr := stackpop(increment(stackpush(codePosition(c), s), wallTimer(c)));
+measure(c:Code, label:Expr):Expr := (
+    pos := codePosition(c);
+    key := Expr(Sequence(label, locate(pos)));
+    stackpop(increment(stackpush(pos, key), wallTimer(c))));
 
 -- when profiling = true is set, eval is substituted with evalprof,
 -- so that everytime evalraw recursively calls eval, this one runs.
@@ -92,10 +94,10 @@ export evalprof(c:Code):Expr := (
     -- stdIO << tostring(codePosition(c)) << " " << tostring(c) << endl;
     when c
     is c:ifCode do (
-	p := measure(c.predicate);
+	p := measure(c.predicate, toExpr("predicate"));
 	when p is Error do p
-	else if p == True  then measure(c.thenClause)
-	else if p == False then measure(c.elseClause)
+	else if p == True  then measure(c.thenClause, toExpr("then"))
+	else if p == False then measure(c.elseClause, toExpr("else"))
 	else printErrorMessageE(c.predicate, "expected true or false"))
     is v:semiCode do (
 	i := 0;
@@ -103,13 +105,13 @@ export evalprof(c:Code):Expr := (
 	r := nullE;
 	n := length(w);
 	while i < n do (
-	    r = measure(w.i);
+	    r = measure(w.i, toExpr(""));
 	    i = when r is Error do n else i+1);
 	r)
     is a:adjacentCode do (
 	when a.lhs
 	is g:globalMemoryReferenceCode
-	do measure(c, g.var)
+	do measure(c, getGlobalVariable(g.var))
 	else evalraw(c))
     else evalraw(c));
 --    (
